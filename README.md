@@ -157,7 +157,7 @@ Send the contents of a JSON file to Ray with a blue marker:
 
 ```bash
 cat my-data.json | vendor/bin/ray --stdin -c blue
-vendor/bin/ray 'my-data.json' --stdin -c blue
+vendor/bin/ray 'my-data.json' -c blue
 ```
 
 ---
