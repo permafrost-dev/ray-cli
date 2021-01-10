@@ -3,6 +3,10 @@
 All notable changes to `permafrost-dev/ray-cli` will be documented in this file.
 
 ---
+## 1.1.1 - 2021-01-10
+
+- update readme with examples on filename arguments, minor other changes
+
 ## 1.1.0 - 2021-01-10
 
 - fix autodetection of json strings

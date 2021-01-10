@@ -24,17 +24,28 @@ Supported PHP versions: `7.4`, `8.0`.
 
 ## Usage
 
-Sending data to Ray is as simple as calling the `ray` script and providing a single argument:
+Sending data to Ray is as simple as calling the `ray` script and providing a single argument, either a string or a filename:
 
 `vendor/bin/ray 'hello world'` 
 
-You can also pass a JSON string and Ray will format it nicely for you:
+
+
+You can provide a JSON string and Ray will format it for you:
 
 `vendor/bin/ray '{"message": "hello world"}'`
 
 <p align="center">
     <img src="https://static.permafrost.dev/images/ray-cli/json-decoded.png" alt="Decoded JSON" height="200" style="block">
   </p>
+
+
+
+You're also able to pass a valid filename instead of a string. The contents of the file will be sent instead, with automatic JSON detection.
+
+```bash
+vendor/bin/ray "testfile.json" -c green
+vendor/bin/ray "readme.txt"
+```
 
 ---
 
@@ -142,10 +153,11 @@ echo "hello world" | vendor/bin/ray --stdin
 
 ## Examples
 
-Send the contents of a json file to Ray with a blue marker:
+Send the contents of a JSON file to Ray with a blue marker:
 
 ```bash
 cat my-data.json | vendor/bin/ray --stdin -c blue
+vendor/bin/ray 'my-data.json' --stdin -c blue
 ```
 
 ---
