@@ -1,0 +1,12 @@
+<?php
+require_once(__DIR__.'/vendor/autoload.php');
+
+use Permafrost\PhpCsFixerRules\Finders\ComposerPackageFinder;
+use Permafrost\PhpCsFixerRules\Rulesets\DefaultRuleset;
+use Permafrost\PhpCsFixerRules\SharedConfig;
+
+$finder = ComposerPackageFinder::create(__DIR__)
+    ->in(__DIR__ . '/bin')
+    ->name('ray');
+    
+return SharedConfig::create($finder, new DefaultRuleset());

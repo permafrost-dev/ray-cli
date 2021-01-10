@@ -1,0 +1,44 @@
+{
+    "name": "permafrost-dev/ray-cli",
+    "description": "sends data to Ray via a cli command",
+    "keywords": [
+        "permafrost",
+        "cli",
+        "ray"
+    ],
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": "^7.4|^8.0",
+        "ext-json": "*",
+        "spatie/ray": "^1.3",
+        "symfony/console": "^5.2"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "permafrost-dev/phpcsfixer-preset": "^1.5",
+        "phpunit/phpunit": "^9.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Permafrost\\RayCli\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Permafrost\\RayCli\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit --testdox",
+        "test-quiet": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage",
+        "format": "vendor/bin/php-cs-fixer fix --allow-risky=yes"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev",
+    "bin": "bin/ray"
+}

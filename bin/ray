@@ -1,0 +1,33 @@
+#!/usr/bin/env php
+<?php
+
+if (file_exists(__DIR__ . '/../../../autoload.php')) {
+    // load autoload file when installed as a composer package
+    require_once __DIR__ . '/../../../autoload.php';
+} elseif (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    // load autoload file when in development
+    require_once __DIR__ . '/../vendor/autoload.php';
+}
+
+use Permafrost\RayCli\SendCommand;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\SingleCommandApplication;
+
+(new SingleCommandApplication())
+    ->setName('ray command line interface')
+    ->setDescription('Interact with and send data to Ray from the command line (https://myray.app)')
+    ->addArgument('data', InputArgument::OPTIONAL, 'The data to send to Ray.')
+    ->addOption('color', 'c', InputOption::VALUE_REQUIRED, 'The payload color', 'default')
+    ->addOption('csv', null, InputOption::VALUE_NONE, 'Sends the data as a comma-separated list')
+    ->addOption('delimiter', 'D', InputOption::VALUE_REQUIRED, 'Sends the data as a list using the specified delimiter')
+    ->addOption('json', 'j', InputOption::VALUE_NONE, 'Sends a json payload')
+    ->addOption('label', 'L', InputOption::VALUE_REQUIRED, 'Sends a label with the payload')
+    ->addOption('notify', 'N', InputOption::VALUE_NONE, 'Sends a notification payload')
+    ->addOption('stdin', null, InputOption::VALUE_NONE, 'Read data from stdin')
+    ->setCode(function (ArgvInput $input, OutputInterface $output) {
+        return (new SendCommand())->execute($input, $output);
+    })
+    ->run();
