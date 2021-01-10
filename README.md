@@ -1,7 +1,7 @@
 <p align="center">
-<img src="https://static.permafrost.dev/images/ray-cli/ray-cli-logo-01.png" alt="Permafrost Dev" height="150" style="block">
+<img src="https://static.permafrost.dev/images/ray-cli/ray-cli-logo-01.png" alt="Permafrost Dev" height="100" style="block">
 <br><br>
-  <code style="font-size:2.1rem;">ray-cli</code>
+  <code style="font-size:2.2rem;"><strong>ray-cli</strong></code>
 </p>
 
 <p align="center">
@@ -32,17 +32,15 @@ You can also pass a JSON string and Ray will format it nicely for you:
 
 `vendor/bin/ray '{"message": "hello world"}'`
 
-<img src="https://static.permafrost.dev/images/ray-cli/json-decoded.png" alt="Permafrost Dev" height="150" style="block">
+<p align="center">
+    <img src="https://static.permafrost.dev/images/ray-cli/json-decoded.png" alt="Decoded JSON" height="200" style="block">
+  </p>
 
 ---
-
-
 
 ## Available Options
 
 The `ray` script offers several flags for sending additional payloads to Ray:
-
-
 
 ### `--color` or `-c`
 
@@ -52,9 +50,11 @@ Default: `none`
 
 Description: sends a "color" payload along with the data.
 
-Example: `vendor/bin/ray -c red 'hello world'`
+Example:
 
-
+```bash
+vendor/bin/ray -c red "hello world"
+```
 
 ### `--label` or `-L`
 
@@ -64,9 +64,11 @@ Default: `none`
 
 Description: sends a "label" payload along with the data.  Only works when sending plain (non-JSON) strings.
 
-Example: `vendor/bin/ray -L 'my label' 'hello world'`
+Example:
 
-
+```bash
+vendor/bin/ray -L "my label" "hello world"
+```
 
 ### `--notify` or `-N`
 
@@ -76,9 +78,11 @@ Default: `false`
 
 Description: sends a "notification" payload, causing Ray to display an OS notification instead of logging the data in its window.
 
-Example: `vendor/bin/ray -N 'hello from ray-cli'`
+Example:
 
-
+```bash
+vendor/bin/ray -N "hello from ray-cli"
+```
 
 ### `--csv`
 
@@ -88,9 +92,11 @@ Default: `false`
 
 Description: causes the payload data to be treated as a comma-separated list of values, and will `explode()` the data and send the resulting array of values instead.
 
-Example: `vendor/bin/ray --csv 'one,two,three'`
+Example:
 
-
+```bash
+vendor/bin/ray --csv "one,two,three"
+```
 
 ### `--delimiter` or `-D`
 
@@ -100,19 +106,23 @@ Default: `none`
 
 Description: causes the payload data to be treated as a list of values delimited by the provided delimiter string, and will `explode()` the data and send the resulting array of values instead.
 
-Example: `vendor/bin/ray -D '|' 'one|two|three'`
+Example:
 
-
+```bash
+vendor/bin/ray -D '|' "one|two|three"
+```
 
 ### `--json` or `-j`
 
 Arguments: `none`
 
 Default: `false`
-Description: Forces the payload data to be treated as a JSON string.
-Example: `vendor/bin/ray --json '["one","two","three"]'`
+Description: Forces the payload data to be treated as a JSON string. Note that this flag is unnecessary in most cases because JSON strings are automatically detected.
+Example:
 
-
+```bash
+vendor/bin/ray --json '["one","two","three"]'
+```
 
 ### `--stdin`
 
@@ -122,13 +132,13 @@ Default: `false`
 
 Description: Reads the payload data from the standard input instead of as a command line parameter.
 
-Example: `echo "hello world" | vendor/bin/ray --stdin`
+Example:
 
-
+```bash
+echo "hello world" | vendor/bin/ray --stdin
+```
 
 ---
-
-
 
 ## Examples
 
@@ -138,11 +148,7 @@ Send the contents of a json file to Ray with a blue marker:
 cat my-data.json | vendor/bin/ray --stdin -c blue
 ```
 
-
-
 ---
-
-
 
 ## Testing
 
