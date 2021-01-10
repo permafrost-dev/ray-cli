@@ -29,7 +29,7 @@ class Options
 
         $result->csv = (bool)self::getOption($input, 'csv', false);
         $result->json = (bool)self::getOption($input, 'json', false);
-        $result->notify = (bool)self::getOption($input, 'json', false);
+        $result->notify = (bool)self::getOption($input, 'notify', false);
         $result->stdin = (bool)self::getOption($input, 'stdin', false);
 
         $result->data = $result->getData($input);
