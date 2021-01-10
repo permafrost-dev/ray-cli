@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://static.permafrost.dev/images/ray-cli-logo-01.png" alt="Permafrost Dev" height="150" style="block">
+<img src="https://static.permafrost.dev/images/ray-cli/ray-cli-logo-01.png" alt="Permafrost Dev" height="150" style="block">
 <br><br>
   <code style="font-size:2.1rem;">ray-cli</code>
 </p>
@@ -28,13 +28,11 @@ Sending data to Ray is as simple as calling the `ray` script and providing a sin
 
 `vendor/bin/ray 'hello world'` 
 
-
-
 You can also pass a JSON string and Ray will format it nicely for you:
 
 `vendor/bin/ray '{"message": "hello world"}'`
 
-
+<img src="https://static.permafrost.dev/images/ray-cli/json-decoded.png" alt="Permafrost Dev" height="150" style="block">
 
 ---
 
