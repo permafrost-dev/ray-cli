@@ -5,3 +5,5 @@
 .vale.ini
 composer.lock
 *.cache
+*.phar
+/scripts
