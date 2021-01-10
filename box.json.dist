@@ -1,0 +1,32 @@
+{
+    "check-requirements": false,
+    "dump-autoload": false,
+    "exclude-dev-files": true,
+    "main": "bin/ray",
+    "compactors": [
+        "KevinGH\\Box\\Compactor\\Json",
+        "KevinGH\\Box\\Compactor\\Php"
+    ],
+    "files": [
+        "LICENSE"
+    ],
+    "finder": [
+        {
+            "name": [
+                "*.php"
+            ],
+            "exclude": [
+                "Test",
+                "test",
+                "Tests",
+                "tests"
+            ],
+            "in": [
+                "bin",
+                "src",
+                "vendor"
+            ]
+        }
+    ],
+    "git-version": "git-version"
+}
