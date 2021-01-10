@@ -15,6 +15,7 @@ class Options
     public bool $stdin = false;
 
     public ?string $data = '';
+    public ?string $filename = null;
 
     /** @var string|string[]|array|mixed|null */
     public $jsonData = null;
@@ -37,6 +38,21 @@ class Options
 
         if (!$result->data) {
             $result->data = '';
+        }
+
+        if (file_exists($result->data) && is_file($result->data)) {
+            $result->filename = realpath($result->data);
+            $content = file_get_contents($result->filename);
+
+            $result->data = self::formatStringForHtmlPayload($content);
+
+            if (self::isJsonString($result->data)) {
+                $result->jsonData = json_decode($result->data, true);
+            } elseif (empty($result->label)) {
+                // if no label exists, use the filename
+                // this only applies to non-json files
+                $result->label = $result->filename ?? '(unknown filename)';
+            }
         }
 
         if (!$result->delimiter && $result->csv) {
@@ -89,5 +105,27 @@ class Options
         }
 
         return null;
+    }
+
+    protected static function isJsonString($text): bool
+    {
+        if (!is_string($text) || empty($text)) {
+            return false;
+        }
+
+        try {
+            json_decode($text, true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    protected static function formatStringForHtmlPayload(string $text): string
+    {
+        $encodedText = str_replace(' ', '&nbsp;', htmlentities($text));
+
+        return nl2br($encodedText);
     }
 }

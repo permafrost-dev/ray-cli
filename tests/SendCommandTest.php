@@ -119,4 +119,25 @@ class SendCommandTest extends TestCase
 
         $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
     }
+
+
+    /** @test */
+    public function it_sends_the_contents_of_a_non_json_file(): void
+    {
+        $tester = $this->getCommandTester();
+
+        $tester->execute(['command' => 'send', 'data' => __FILE__]);
+
+        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+    }
+
+    /** @test */
+    public function it_sends_the_contents_of_a_json_file(): void
+    {
+        $tester = $this->getCommandTester();
+
+        $tester->execute(['command' => 'send', 'data' => __DIR__ . DIRECTORY_SEPARATOR . 'testfile.json']);
+
+        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+    }
 }
