@@ -16,6 +16,29 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\SingleCommandApplication;
 
+/**
+ * This returns the package version, using a magic placeholder for the git tag version
+ * when building the phar binary.
+ *
+ * if not running as a phar, the installed package version is used.
+ *
+ * @return string
+ */
+function getVersion(): string
+{
+    $version = 'v@git-version@';
+
+    if (strpos($version, 'v@git-') === 0) {
+        $version = \Composer\InstalledVersions::getPrettyVersion('permafrost-dev/ray-cli');
+    }
+
+    if ($version === null) {
+        $version = 'v1.x.x';
+    }
+
+    return $version;
+}
+
 (new SingleCommandApplication())
     ->setName('ray command line interface')
     ->setDescription('Interact with and send data to Ray from the command line (https://myray.app)')
