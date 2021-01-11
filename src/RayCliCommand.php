@@ -14,8 +14,9 @@ class SendCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->payload = ray();
         $options = Options::fromInput($input);
+
+        $this->payload = ray();
 
         $this->sendInitialPayload($options)
             ->sendColorPayload($options);
@@ -35,11 +36,26 @@ class SendCommand extends Command
      */
     protected function sendInitialPayload(Options $options): self
     {
+        // only create a new screen and nothing else
+        if (empty($options->data) && $options->screen) {
+            $this->payload->newScreen($options->screen);
+
+            // ignore the color flags since no data is being sent
+            $options->color = null;
+
+            return $this;
+        }
+
         // send a notification payload
         if ($options->notify) {
             $this->payload = $this->payload->notify($options->data);
 
             return $this;
+        }
+
+        // request that a new screen is created with name (optional)
+        if ($options->screen) {
+            $this->payload = $this->payload->newScreen($options->screen);
         }
 
         // send a delimited list payload

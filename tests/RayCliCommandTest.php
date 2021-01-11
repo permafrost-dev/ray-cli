@@ -2,17 +2,15 @@
 
 namespace Permafrost\RayCli\Tests;
 
-use Permafrost\RayCli\SendCommand;
+use Permafrost\RayCli\RayCliCommand;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class SendCommandTest extends TestCase
+use function Permafrost\RayCli\initialize_command;
+
+class RayCliCommandTest extends TestCase
 {
     public static function setUpBeforeClass(): void
     {
@@ -30,7 +28,7 @@ class SendCommandTest extends TestCase
 
     public function getCommand()
     {
-        $command = new SendCommand();
+        $command = new RayCliCommand();
         $command->setName('send');
 
         return $command;
@@ -46,21 +44,10 @@ class SendCommandTest extends TestCase
 
     public function getApp($command)
     {
-        return (new Application())
-            ->add($command)
-            ->addArgument('data', InputArgument::OPTIONAL, 'The data to send to Ray.')
-            ->addOption('color', 'c', InputOption::VALUE_REQUIRED, 'The payload color', 'default')
-            ->addOption('csv', null, InputOption::VALUE_NONE, 'Sends the data as a comma-separated list')
-            ->addOption('delimiter', 'D', InputOption::VALUE_REQUIRED, 'Sends the data as a list using the specified delimiter')
-            ->addOption('json', 'j', InputOption::VALUE_NONE, 'Sends a json payload')
-            ->addOption('label', 'L', InputOption::VALUE_REQUIRED, 'Sends a label with the payload')
-            ->addOption('notify', 'N', InputOption::VALUE_NONE, 'Sends a notification payload')
-            ->addOption('stdin', null, InputOption::VALUE_NONE, 'Read data from stdin')
-            ;
-//            ->setCode(function (ArrayInput $input, OutputInterface $output) {
-//                print_r($input->getArguments());
-//                return false;
-//            });
+        $app = (new Application())
+            ->add($command);
+
+        return initialize_command($app);
     }
 
     /** @test */
@@ -138,6 +125,30 @@ class SendCommandTest extends TestCase
 
         $tester->execute(['command' => 'send', 'data' => __DIR__ . DIRECTORY_SEPARATOR . 'testfile.json']);
 
+        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+    }
+
+    /** @test */
+    public function it_creates_a_new_screen(): void
+    {
+        $tester = $this->getCommandTester();
+
+        $tester->execute(['command' => 'send', 'data' => 'test string', '--screen' => 'a new screen']);
+        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+
+        $tester->execute(['command' => 'send', 'data' => 'test string', '--screen' => true]);
+        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+
+        $tester->execute(['command' => 'send', 'data' => 'test string', '-s' => null]);
+        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+    }
+
+    /** @test */
+    public function it_clears_the_screen(): void
+    {
+        $tester = $this->getCommandTester();
+
+        $tester->execute(['command' => 'send', 'data' => 'test string', '--clear' => true]);
         $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
     }
 }
