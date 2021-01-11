@@ -3,6 +3,17 @@
 All notable changes to `permafrost-dev/ray-cli` will be documented in this file.
 
 ---
+
+## 1.2.0 - 2021-01-11
+
+- add `--clear|-C` flag to allow clearing the screen in Ray
+
+- add `--screen|-s` flag to allow creating a new named screen in Ray
+
+- code cleanup
+
+- add some separation of concerns in code
+
 ## 1.1.1 - 2021-01-10
 
 - update readme with examples on filename arguments, minor other changes
@@ -24,4 +35,3 @@ All notable changes to `permafrost-dev/ray-cli` will be documented in this file.
 ## 1.0.0 - 2021-01-10
 
 - initial release
-

@@ -28,8 +28,6 @@ Sending data to Ray is as simple as calling the `ray` script and providing a sin
 
 `vendor/bin/ray 'hello world'` 
 
-
-
 You can provide a JSON string and Ray will format it for you:
 
 `vendor/bin/ray '{"message": "hello world"}'`
@@ -37,8 +35,6 @@ You can provide a JSON string and Ray will format it for you:
 <p align="center">
     <img src="https://static.permafrost.dev/images/ray-cli/json-decoded.png" alt="Decoded JSON" height="200" style="block">
   </p>
-
-
 
 You're also able to pass a valid filename instead of a string. The contents of the file will be sent instead, with automatic JSON detection.
 
@@ -147,6 +143,53 @@ Example:
 
 ```bash
 echo "hello world" | vendor/bin/ray --stdin
+```
+
+### `--screen` or `-s`
+
+Arguments: `string`
+
+Default: `none`
+
+Description: causes a new screen to be created in Ray, with the argument being the "name" of the new screen.  Passing an empty string or a string value of `"-"` will cause the screen to be unnamed _(the same effect as calling `ray()->clearScreen()`)_.  Passing `--screen` or `-s` as the last argument on the command line is the same as providing a screen name of `"-"`.
+
+Example:
+
+```bash
+# create a screen named "debug #1":
+vendor/bin/ray -s 'debug #1' "hello world"
+vendor/bin/ray --screen='debug #1' "hello world"
+
+# create a screen with no name:
+vendor/bin/ray -s- "hello world"
+vendor/bin/ray --screen=- "hello world"
+vendor/bin/ray --screen= "hello world"
+vendor/bin/ray "hello world" -s
+
+# create a named screen without sending data:
+vendor/bin/ray --screen="my screen 2"
+vendor/bin/ray -s "my screen 3"
+```
+
+### `--clear` or `-C`
+
+Arguments: `none`
+
+Default: `none`
+
+Example:
+Description: causes Ray the clear the screen _(it's really just creating a new screen with no name)_. **If both `--screen` and `--clear` are provided, `--clear` takes precedence.**
+
+Example:
+
+```bash
+# clear the screen and send some data:
+vendor/bin/ray -C "hello world"
+vendor/bin/ray --clear "hello world"
+
+# clear the screen without sending any data:
+vendor/bin/ray -C
+vendor/bin/ray --clear
 ```
 
 ---
