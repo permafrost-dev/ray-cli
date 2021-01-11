@@ -22,7 +22,10 @@
     "autoload": {
         "psr-4": {
             "Permafrost\\RayCli\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
