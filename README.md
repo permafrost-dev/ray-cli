@@ -20,6 +20,20 @@ Supported PHP versions: `7.4`, `8.0`.
 
 `composer require permafrost-dev/ray-cli --dev`
 
+You may also download a `phar` executable from the [releases](https://github.com/permafrost-dev/ray-cli/releases) page.  The primary advantage of using a `phar` is that **you don't need to install the package** into your project.
+
+If you download  a `phar`, replace _`vendor/bin/ray`_ with the filename of the `phar` in the examples, i.e.:
+
+```bash
+vendor/bin/ray 'test message' --green --large
+```
+
+_would become:_
+
+```bash
+ray-1.4.0.phar 'test message' --green --large
+```
+
 ---
 
 ## Usage
@@ -63,7 +77,7 @@ Example:
 vendor/bin/ray -c red "hello world"
 ```
 
-### `--large`
+### `--large` or `--lg`
 
 Arguments: `none`
 
@@ -75,9 +89,10 @@ Example:
 
 ```bash
 vendor/bin/ray --large "hello world"
+vendor/bin/ray --lg "hello world"
 ```
 
-### `--small`
+### `--small`or `--sm`
 
 Arguments: `none`
 
@@ -89,6 +104,25 @@ Example:
 
 ```bash
 vendor/bin/ray --small "hello world"
+vendor/bin/ray --sm "hello world"
+```
+
+### `--size` or `-S`
+
+Arguments: `string`
+
+Default: `none`
+
+Possible Values: `large`, `lg`, `small`, `sm`, `normal`
+
+Description: sends a payload with the specified text size.  See `--large` and `--small`.
+
+Example:
+
+```bash
+vendor/bin/ray -S sm "hello world"
+vendor/bin/ray -S large "hello world"
+vendor/bin/ray --size=normal "hello world"
 ```
 
 ### `--label` or `-L`
@@ -97,7 +131,7 @@ Arguments: `string`
 
 Default: `none`
 
-Description: sends a "label" payload along with the data.  Only works when sending plain (non-JSON) strings.
+Description: sends a "label" payload along with the data.  Only works when sending plain _(non-JSON and non-delimited)_ strings.
 
 Example:
 
@@ -152,7 +186,9 @@ vendor/bin/ray -D '|' "one|two|three"
 Arguments: `none`
 
 Default: `false`
+
 Description: Forces the payload data to be treated as a JSON string. Note that this flag is unnecessary in most cases because JSON strings are automatically detected.
+
 Example:
 
 ```bash
@@ -253,7 +289,7 @@ vendor/bin/ray 'my-data.json' --blue
 Send the contents of `test.json` with small text, a red marker, and to a new screen named "my data": 
 
 ```php
-vendor/bin/ray --screen='my data' --red --small 'test.json' 
+vendor/bin/ray --screen='my data' --red --small 'test.json'
 ```
 
 ---

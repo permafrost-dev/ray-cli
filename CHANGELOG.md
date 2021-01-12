@@ -4,12 +4,30 @@ All notable changes to `permafrost-dev/ray-cli` will be documented in this file.
 
 ---
 
+## 1.5.0 - 2021-01-12 (unrelease)
+
+- add `--sm` and `--lg` flags as shorter versions of `--small` and `--large`
+
+- add `--size <size>` flag to set the payload text size
+
+- add scripts used for building release phar executable
+
+- update github action workflows to only trigger when appropriate
+
+- update readme with example usage for `phar` executable
+
+- fix readme typos
+
 ## 1.4.0 - 2020-01-11
 
 - add color name flags *(`--red`, `--blue`, etc.)*
+
 - major update to tests, increasing coverage considerably
+
 - add support for coveralls.io _(config file, github action workflow)_
+
 - fix typo in PHPUnit configuration
+
 - update readme with examples of color name flags
 
 ## 1.3.2 - 2020-01-11
