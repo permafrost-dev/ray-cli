@@ -220,6 +220,25 @@ vendor/bin/ray -C
 vendor/bin/ray --clear
 ```
 
+## `--blue`, `--gray`, `--green`, `--orange`, `--purple`, `--red`
+
+Arguments: `none`
+
+Default: `false`
+
+Description: causes the payload to be sent with the indicated color.  Alias for  the `--color=N` flag.
+
+Example:
+
+```bash
+vendor/bin/ray --red "hello world"
+vendor/bin/ray --orange "hello world"
+
+# only the first flag is used when multiple flags are provided.
+# sent as green:
+vendor/bin/ray --green --red --blue "hello world"
+```
+
 ---
 
 ## Examples
@@ -228,7 +247,13 @@ Send the contents of a JSON file to Ray with a blue marker:
 
 ```bash
 cat my-data.json | vendor/bin/ray --stdin -c blue
-vendor/bin/ray 'my-data.json' -c blue
+vendor/bin/ray 'my-data.json' --blue
+```
+
+Send the contents of `test.json` with small text, a red marker, and to a new screen named "my data": 
+
+```php
+vendor/bin/ray --screen='my data' --red --small 'test.json' 
 ```
 
 ---

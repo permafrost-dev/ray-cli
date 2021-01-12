@@ -4,6 +4,14 @@ All notable changes to `permafrost-dev/ray-cli` will be documented in this file.
 
 ---
 
+## 1.4.0 - 2020-01-11
+
+- add color name flags *(`--red`, `--blue`, etc.)*
+- major update to tests, increasing coverage considerably
+- add support for coveralls.io _(config file, github action workflow)_
+- fix typo in PHPUnit configuration
+- update readme with examples of color name flags
+
 ## 1.3.2 - 2020-01-11
 
 - fix bug in `Utilities::initializeCommand()`
