@@ -133,9 +133,12 @@ class Utilities
             ->addOption('json', 'j', InputOption::VALUE_NONE, 'Sends a json payload')
             ->addOption('label', 'L', InputOption::VALUE_REQUIRED, 'Sends a label with the payload')
             ->addOption('large', null, InputOption::VALUE_NONE, 'Send the payload as large text')
+            ->addOption('lg', null, InputOption::VALUE_NONE, 'Send the payload as large text')
             ->addOption('notify', 'N', InputOption::VALUE_NONE, 'Sends a notification payload')
             ->addOption('screen', 's', InputOption::VALUE_OPTIONAL, 'Create a new screen with an optional name')
+            ->addOption('size', 'S', InputOption::VALUE_REQUIRED, 'Send the payload text size (sm/lg)')
             ->addOption('small', null, InputOption::VALUE_NONE, 'Send the payload as small text')
+            ->addOption('sm', null, InputOption::VALUE_NONE, 'Send the payload as small text')
             ->addOption('stdin', null, InputOption::VALUE_NONE, 'Read data from stdin');
 
         self::$app = self::initializeColorFlags($app);

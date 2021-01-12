@@ -4,10 +4,13 @@ namespace Permafrost\RayCli\Tests;
 
 use Permafrost\RayCli\Options;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Input\InputOption;
 
 class OptionsTest extends TestCase
 {
-
     /** @test */
     public function it_resets_sizes(): void
     {
@@ -35,5 +38,103 @@ class OptionsTest extends TestCase
     {
         $this->assertEquals('A&nbsp;B&nbsp;C', Options::formatStringForHtmlPayload('A B C'));
         $this->assertEquals("A<br />\nB<br />\nC", Options::formatStringForHtmlPayload("A\nB\nC"));
+    }
+
+    /** @test */
+    public function it_processes_the_clear_screen_option(): void
+    {
+        $input1 = new ArgvInput([]);
+        $input2 = new ArgvInput(['--clear' => true]);
+
+        $options = new Options();
+
+        $options->clear = true;
+        $options->processClearScreenOption($input1);
+        $this->assertFalse($options->clear);
+
+        $options->clear = true;
+        $options->processClearScreenOption($input2);
+        $this->assertFalse($options->clear);
+    }
+
+    /** @test */
+    public function it_gets_options(): void
+    {
+        $definition1 = new InputDefinition([
+            new InputArgument('data', InputArgument::OPTIONAL),
+            new InputOption('screen', 's', InputOption::VALUE_OPTIONAL),
+        ]);
+
+        $definition2 = new InputDefinition([
+            new InputArgument('data', InputArgument::OPTIONAL),
+            new InputOption('clear', 'C', InputOption::VALUE_NONE),
+            new InputOption('screen', 's', InputOption::VALUE_OPTIONAL),
+            new InputOption('color', 'c', InputOption::VALUE_REQUIRED),
+            new InputOption('large', null, InputOption::VALUE_NONE),
+        ]);
+
+        $input1 = new ArgvInput(['bin/ray', '"test string"', '--screen'], $definition1);
+        $input2 = new ArgvInput(['bin/ray', '--clear', '-s', 'test1', '--color=red', '"test string"'], $definition2);
+
+        $this->assertEquals('default_value', Options::getOption($input1, 'clear', 'default_value'));
+        $this->assertEquals(null, Options::getOption($input1, 'screen', 'default_value'));
+        $this->assertEquals(true, Options::getOption($input2, 'clear', 'test'));
+        $this->assertEquals('test1', Options::getOption($input2, 'screen', 'default_value'));
+        $this->assertEquals('red', Options::getOption($input2, 'color', 'default_value'));
+        $this->assertEquals(false, Options::getOption($input2, 'large', 'default_value'));
+    }
+
+    /** @test */
+    public function it_gets_data_from_stdin(): void
+    {
+        $definition1 = new InputDefinition([
+            new InputArgument('data', InputArgument::OPTIONAL),
+        ]);
+
+        $definition2 = new InputDefinition([
+            new InputArgument('data', InputArgument::OPTIONAL),
+            new InputOption('stdin', null, InputOption::VALUE_NONE),
+        ]);
+
+        $input1 = new ArgvInput(['bin/ray', 'test string'], $definition1);
+        $input2 = new ArgvInput(['bin/ray', '--stdin'], $definition2);
+
+        $options = new Options();
+        $options->stdin = false;
+
+        $this->assertEquals('test string', $options->getData($input1));
+
+        $options->stdin = true;
+        $options->stdinFile = __DIR__ . '/tempstdinfile.tmp';
+
+        file_put_contents($options->stdinFile, '__TEST_STRING__');
+
+        $this->assertEquals('__TEST_STRING__', $options->getData($input2));
+
+        unlink($options->stdinFile);
+    }
+
+    /** @test */
+    public function it_processes_the_screen_option(): void
+    {
+        $definition1 = new InputDefinition([
+            new InputArgument('data', InputArgument::OPTIONAL),
+            new InputOption('screen', 's', InputOption::VALUE_OPTIONAL),
+        ]);
+
+        $definition2 = new InputDefinition([
+            new InputArgument('data', InputArgument::OPTIONAL),
+            new InputOption('screen', 's', InputOption::VALUE_OPTIONAL),
+        ]);
+
+        $input1 = new ArgvInput(['bin/ray', '"test string"'], $definition1);
+        $input2 = new ArgvInput(['bin/ray', '-s', 'test1', '"my string"'], $definition2);
+
+
+        $options = new Options();
+        //$options->screen = '';
+
+        $options->processScreenOption($input1);
+        $this->assertEquals(null, $options->screen);
     }
 }

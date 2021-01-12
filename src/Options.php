@@ -6,6 +6,8 @@ use Symfony\Component\Console\Input\InputInterface;
 
 class Options
 {
+    public string $stdinFile = 'php://stdin';
+
     public bool $clear = false;
     public ?string $color = null;
     public bool $csv = false;
@@ -15,6 +17,7 @@ class Options
     public bool $large = false;
     public bool $notify = false;
     public ?string $screen = null;
+    public ?string $size = null;
     public bool $small = false;
     public bool $stdin = false;
 
@@ -85,6 +88,7 @@ class Options
         $result->delimiter = self::getOption($input, 'delimiter', null);
         $result->label = (string)self::getOption($input, 'label', '');
         $result->screen = self::getOption($input, 'screen', null);
+        $result->size = self::getOption($input, 'size', null);
 
         // boolean options
         $result->clear = (bool)self::getOption($input, 'clear', false);
@@ -94,6 +98,27 @@ class Options
         $result->notify = (bool)self::getOption($input, 'notify', false);
         $result->small = (bool)self::getOption($input, 'small', false);
         $result->stdin = (bool)self::getOption($input, 'stdin', false);
+
+        // boolean alias options
+        if (!$result->large) {
+            $result->large = (bool)self::getOption($input, 'lg', false);
+        }
+        if (!$result->small) {
+            $result->small = (bool)self::getOption($input, 'sm', false);
+        }
+
+        if (in_array($result->size, ['large', 'lg'], true)) {
+            $result->large = true;
+        }
+
+        if (in_array($result->size, ['small', 'sm'], true)) {
+            $result->small = true;
+        }
+
+        if (in_array($result->size, ['normal'], true)) {
+            $result->large = false;
+            $result->small = false;
+        }
 
         // color options
         foreach (Utilities::getRayColors() as $color) {
@@ -113,19 +138,27 @@ class Options
      *
      * @return bool|mixed|string|string[]|null
      */
-    protected static function getOption(InputInterface $input, string $name, $default)
+    public static function getOption(InputInterface $input, string $name, $default)
     {
+        if ($input->hasOption($name)) {
+            return $input->getOption($name);
+        }
+
         if ($input->hasOption($name) && !$input->getOption($name)) {
+            return $default;
+        }
+
+        if (!$input->hasOption($name)) {
             return $default;
         }
 
         return $input->getOption($name);
     }
 
-    protected function getData(InputInterface $input): ?string
+    public function getData(InputInterface $input): ?string
     {
         if ($this->stdin) {
-            return file_get_contents('php://stdin');
+            return file_get_contents($this->stdinFile);
         }
 
         return $input->getArgument('data');
@@ -180,13 +213,20 @@ class Options
      *
      * @return bool
      */
-    protected function processScreenOption(InputInterface $input): void
+    public function processScreenOption(InputInterface $input): void
     {
-        if (!$input->hasOption('screen')) {
-            $this->screen = null;
+//        if (!$this->getOption($input, 'screen', false)) {
+//            $this->screen = null;
+//
+//            return;
+//        }
 
-            return;
-        }
+//
+//        if (!$input->hasOption('screen') || $input->getOption('screen') === false) {
+//            $this->screen = null;
+//
+//            return;
+//        }
 
         if ($input->hasOption('screen') && $input->getOption('screen') === null) {
             $this->screen = null;
@@ -212,7 +252,7 @@ class Options
         }
     }
 
-    protected function processClearScreenOption(InputInterface $input): void
+    public function processClearScreenOption(InputInterface $input): void
     {
         if (!$input->hasOption('clear')) {
             $this->clear = false;

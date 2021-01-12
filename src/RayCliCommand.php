@@ -14,7 +14,7 @@ class RayCliCommand extends Command
     protected Ray $payload;
     protected Options $options;
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, ?OutputInterface $output)
     {
         $this->initializeCommand($input);
 
@@ -120,7 +120,7 @@ class RayCliCommand extends Command
         return $this;
     }
 
-    protected function sendNamedColorPayload(Options $options): self
+    public function sendNamedColorPayload(Options $options): self
     {
         foreach(Utilities::getRayColors() as $color) {
             if ($options->{$color}) {

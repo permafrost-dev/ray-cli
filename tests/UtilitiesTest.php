@@ -92,6 +92,12 @@ class UtilitiesTest extends TestCase
     public function it_can_get_the_package_version(): void
     {
         $this->assertEquals('dev-main', Utilities::getPackageVersion());
+
+        $_ENV['APP_ENV'] = 'not_testing';
+        unset($_ENV['APP_ENV']);
+        putenv('APP_ENV=');
+
+        $this->assertEquals('dev-main', Utilities::getPackageVersion());
     }
 
     /** @test */

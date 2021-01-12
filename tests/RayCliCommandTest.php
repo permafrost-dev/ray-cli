@@ -106,7 +106,6 @@ class RayCliCommandTest extends TestCase
         $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
     }
 
-
     /** @test */
     public function it_sends_the_contents_of_a_non_json_file(): void
     {
@@ -163,16 +162,47 @@ class RayCliCommandTest extends TestCase
         $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
     }
 
-
     /** @test */
-    public function it_sends_sizes(): void
+    public function it_sends_sizes_with_named_flags(): void
     {
         $tester = $this->getCommandTester();
 
-        $tester->execute(['command' => 'send', 'data' => 'test string', '--large' => true]);
-        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+        $flags = ['large', 'small', 'sm', 'lg'];
 
-        $tester->execute(['command' => 'send', 'data' => 'test string', '--small' => true]);
+        foreach ($flags as $flag) {
+            $tester->execute(['command' => 'send', 'data' => 'test string', "--$flag" => true]);
+            $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+        }
+    }
+
+    /** @test */
+    public function it_sends_sizes_using_size_flags(): void
+    {
+        $tester = $this->getCommandTester();
+
+        $sizes = ['large', 'lg', 'small', 'sm', 'normal', ''];
+
+        foreach ($sizes as $size) {
+            $tester->execute(['command' => 'send', 'data' => 'test string', '--size' => $size]);
+            $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+        }
+    }
+
+    /** @test */
+    public function it_sends_only_clear_screen(): void
+    {
+        $tester = $this->getCommandTester();
+
+        $tester->execute(['command' => 'send', '--clear' => true]);
         $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+    }
+
+    /** @test */
+    public function it_shows_usage_message_when_no_flags_and_no_data_are_provided(): void
+    {
+        $tester = $this->getCommandTester();
+
+        $tester->execute(['command' => 'send']);
+        $this->assertStringContainsString('Usage: ', $tester->getDisplay());
     }
 }
