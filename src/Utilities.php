@@ -57,8 +57,7 @@ class Utilities
     public static function isRunningUnitTests(): bool
     {
         // phpunit is running or we are running under CI (i.e. github actions)
-        return strtolower($_ENV['APP_ENV'] ?? '') === 'testing'
-            || self::isRunningInCI();
+        return strtolower($_ENV['APP_ENV'] ?? '') === 'testing';
     }
 
     public static function isRunningInCI(): bool
