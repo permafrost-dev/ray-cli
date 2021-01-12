@@ -14,7 +14,7 @@ class RayCliCommandTest extends TestCase
 {
     public static function setUpBeforeClass(): void
     {
-        ray()->newScreen('ray-cli:test:' . __CLASS__);
+        ray()->newScreen('ray-cli:test:' . __CLASS__ . '@' . date('H:i:s'));
 
         parent::setUpBeforeClass();
     }
@@ -149,6 +149,19 @@ class RayCliCommandTest extends TestCase
         $tester = $this->getCommandTester();
 
         $tester->execute(['command' => 'send', 'data' => 'test string', '--clear' => true]);
+        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+    }
+
+
+    /** @test */
+    public function it_sends_sizes(): void
+    {
+        $tester = $this->getCommandTester();
+
+        $tester->execute(['command' => 'send', 'data' => 'test string', '--large' => true]);
+        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+
+        $tester->execute(['command' => 'send', 'data' => 'test string', '--small' => true]);
         $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
     }
 }

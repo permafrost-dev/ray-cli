@@ -12,8 +12,10 @@ class Options
     public ?string $delimiter = null;
     public bool $json = false;
     public string $label = '';
+    public bool $large = false;
     public bool $notify = false;
     public ?string $screen = null;
+    public bool $small = false;
     public bool $stdin = false;
 
     public ?string $data = '';
@@ -38,6 +40,7 @@ class Options
         }
 
         $result->processScreenOption($input);
+        $result->processClearScreenOption($input);
 
         if (!$result->data && !$result->resetDataToNull) {
             $result->data = '';
@@ -59,6 +62,30 @@ class Options
         }
 
         return $result;
+    }
+
+    /**
+     * Loads options from `$input` into the instance properties.
+     *
+     * @param InputInterface $input
+     * @param Options $result
+     */
+    protected static function loadOptionsFromInput(InputInterface $input, Options $result): void
+    {
+        // string options
+        $result->color = self::getOption($input, 'color', null);
+        $result->delimiter = self::getOption($input, 'delimiter', null);
+        $result->label = (string)self::getOption($input, 'label', '');
+        $result->screen = self::getOption($input, 'screen', null);
+
+        // boolean options
+        $result->clear = (bool)self::getOption($input, 'clear', false);
+        $result->csv = (bool)self::getOption($input, 'csv', false);
+        $result->json = (bool)self::getOption($input, 'json', false);
+        $result->large = (bool)self::getOption($input, 'large', false);
+        $result->notify = (bool)self::getOption($input, 'notify', false);
+        $result->small = (bool)self::getOption($input, 'small', false);
+        $result->stdin = (bool)self::getOption($input, 'stdin', false);
     }
 
     /**
@@ -136,11 +163,17 @@ class Options
      */
     protected function processScreenOption(InputInterface $input): void
     {
-        if ($input->hasOption('screen') && $input->getOption('screen') === null) {
-            $this->screen = '-';
+        if (!$input->hasOption('screen')) {
+            $this->screen = null;
+            return;
         }
 
-        if (!$this->data && $input->hasOption('screen')) {
+        if ($input->hasOption('screen') && $input->getOption('screen') === null) {
+            $this->screen = null;
+            return;
+        }
+
+        if (!$this->data) {
             $this->resetDataToNull = true;
 
             if (!$this->screen) {
@@ -153,28 +186,27 @@ class Options
         }
 
         if ($this->screen && $this->screen === ' ') {
-            $this->screen = null;
-            $this->clear = true;
+            $this->screen = ' ';
+            $this->clear = false;
+        }
+
+
+    }
+
+    protected function processClearScreenOption(InputInterface $input): void
+    {
+        if (!$input->hasOption('clear')) {
+            $this->clear = false;
+        }
+
+        if ($input->hasOption('clear') && $input->getOption('clear') === null) {
+            $this->clear = false;
         }
     }
 
-    /**
-     * @param InputInterface $input
-     * @param Options $result
-     */
-    protected static function loadOptionsFromInput(InputInterface $input, Options $result): void
+    public function resetSizes(): void
     {
-        // string options
-        $result->color = self::getOption($input, 'color', null);
-        $result->delimiter = self::getOption($input, 'delimiter', null);
-        $result->label = (string)self::getOption($input, 'label', '');
-        $result->screen = self::getOption($input, 'screen', null);
-
-        // boolean options
-        $result->clear = (bool)self::getOption($input, 'clear', false);
-        $result->csv = (bool)self::getOption($input, 'csv', false);
-        $result->json = (bool)self::getOption($input, 'json', false);
-        $result->notify = (bool)self::getOption($input, 'notify', false);
-        $result->stdin = (bool)self::getOption($input, 'stdin', false);
+        $this->large = false;
+        $this->small = false;
     }
 }

@@ -18,7 +18,8 @@ class RayCliCommand extends Command
     {
         $this->initializeCommand($input)
             ->sendInitialPayload($this->options)
-            ->sendColorPayload($this->options);
+            ->sendColorPayload($this->options)
+            ->sendSizePayload($this->options);
 
         $output->writeln('<info>Sent data to Ray.</info>');
 
@@ -62,12 +63,11 @@ class RayCliCommand extends Command
         return $this;
     }
 
-    protected function updatePayload(Ray $payload): void
+    protected function updatePayload(Ray $payload, bool $markUpdated = true): void
     {
         $this->payload = $payload;
-        $this->updatedPayload = true;
+        $this->updatedPayload = $markUpdated;
     }
-
 
     /**
      * Sends a color payload to Ray.
@@ -79,7 +79,22 @@ class RayCliCommand extends Command
     protected function sendColorPayload(Options $options): self
     {
         if ($options->color) {
-            $this->payload->color($options->color);
+            $this->updatePayload($this->payload->color($options->color), false);
+        }
+
+        return $this;
+    }
+
+    protected function sendSizePayload(Options $options): self
+    {
+        if ($options->large) {
+            $this->payload->large();
+            //$this->updatePayload($this->payload->size('large'), false);
+        }
+
+        if ($options->small) {
+            $this->payload->small();
+            //$this->updatePayload($this->payload->size('small'), false);
         }
 
         return $this;
@@ -91,8 +106,10 @@ class RayCliCommand extends Command
             // only clear the screen and nothing else
             $this->payload->clearScreen();
 
-            // ignore the color flags since no data is being sent
+            // since no data is being sent, ignore the color/size flags so we don't
+            // send an empty payload with just a color or size.
             $options->color = null;
+            $options->resetSizes();
 
             return true;
         }
@@ -132,7 +149,8 @@ class RayCliCommand extends Command
         // request that a new screen is created with name (optional)
 
         if ($options->screen) {
-            $this->updatePayload($this->payload->newScreen($options->screen));
+            // don't call updatePayload(), otherwise a text payload will not be sent
+            $this->payload = $this->payload->newScreen($options->screen);
         }
 
         return $this;
@@ -144,7 +162,8 @@ class RayCliCommand extends Command
         // request that the screen is cleared (which creates a new screen without a name)
 
         if ($options->clear) {
-            $this->updatePayload($this->payload->clearScreen());
+            // don't call updatePayload(), otherwise a text payload will not be sent
+            $this->payload = $this->payload->clearScreen();
         }
 
         return $this;
