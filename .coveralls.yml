@@ -1,4 +1,0 @@
-#.coveralls.yml
-
-# single file
-coverage_clover: build/logs/clover.xml
