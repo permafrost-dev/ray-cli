@@ -2,18 +2,6 @@ name: Test Coveralls
 
 on:
   push:
-    paths:
-      - 'src/**'
-      - 'tests/**'
-    paths-ignore:
-      - '.gitignore'
-      - '.php_cs.dist'
-      - '.php_cs'
-      - 'box.json.dist'
-      - 'LICENSE'
-      - '**.md'
-      - 'docs/**'
-      - 'scripts/**'
     branches:
       - main
 
