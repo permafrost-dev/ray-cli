@@ -116,7 +116,6 @@ class Utilities
     {
         self::$app = $command
             ->setHelp('help message')
-            ->setVersion(self::getPackageVersion())
             ->setDescription('Interact with and send data to Ray from the command line (https://myray.app)')
             ->addArgument('data', InputArgument::OPTIONAL, 'The data to send to Ray.')
             ->addOption('clear', 'C', InputOption::VALUE_NONE, 'Clears the Ray screen')

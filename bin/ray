@@ -23,6 +23,7 @@ use Symfony\Component\Console\SingleCommandApplication;
 
 Utilities::initializeCommand(new SingleCommandApplication())
     ->setName('ray command line interface')
+    ->setVersion(Utilities::getPackageVersion())
     ->setCode(function (ArgvInput $input, OutputInterface $output) {
         return (new RayCliCommand())->execute($input, $output);
     })
