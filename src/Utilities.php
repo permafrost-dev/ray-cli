@@ -5,13 +5,12 @@ namespace Permafrost\RayCli;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\SingleCommandApplication;
 
 class Utilities
 {
     public const PACKAGE_NAME = 'permafrost-dev/ray-cli';
 
-    static $app = null;
+    public static $app = null;
 
     /**
      * Returns the filename that was executed.
@@ -31,9 +30,9 @@ class Utilities
      *
      * @return bool
      */
-    public static function runningAsPhar(): bool
+    public static function runningAsPhar(?string $filename = null): bool
     {
-        $executedFile = self::getExecutedFilename();
+        $executedFile = $filename ?? self::getExecutedFilename();
 
         if (empty($executedFile) || !file_exists($executedFile)) {
             return false;
@@ -58,7 +57,13 @@ class Utilities
     public static function isRunningUnitTests(): bool
     {
         // phpunit is running or we are running under CI (i.e. github actions)
-        return strtolower(getenv('APP_ENV')) === 'testing' || getenv('CI');
+        return strtolower($_ENV['APP_ENV'] ?? '') === 'testing'
+            || self::isRunningInCI();
+    }
+
+    public static function isRunningInCI(): bool
+    {
+        return getenv('CI') ? true : false;
     }
 
     /**
@@ -75,20 +80,24 @@ class Utilities
             return 'dev-main';
         }
 
-        $version = '@git-version@';
+        $version = 'v@git-version@';
 
-        if (strpos($version, '@git') === 0 || !self::runningAsPhar()) {
+        if (strpos($version, 'v@git') === 0 || !self::runningAsPhar()) {
             $version = \Composer\InstalledVersions::getPrettyVersion(self::PACKAGE_NAME);
+
+            if (is_numeric($version[0] ?? '')) {
+                $version = "v$version";
+            }
         }
 
         if (empty($version)) {
-            $version = '1.x';
+            $version = 'v1.x';
         }
 
-        // ensure the version string is prefixed with 'v'
-        if ($version[0] ?? '' !== 'v') {
-            $version = "v$version";
-        }
+//        // ensure the version string is prefixed with 'v'
+//        if ($version[0] ?? '' !== 'v' && $version !== 'dev-main') {
+//            $version = "v$version";
+//        }
 
         return empty($version) ? 'v1.x' : $version;
     }
@@ -114,7 +123,7 @@ class Utilities
      */
     public static function initializeCommand(Command $command): Command
     {
-        self::$app = $command
+        $app = $command
             ->setHelp('help message')
             ->setDescription('Interact with and send data to Ray from the command line (https://myray.app)')
             ->addArgument('data', InputArgument::OPTIONAL, 'The data to send to Ray.')
@@ -130,6 +139,24 @@ class Utilities
             ->addOption('small', null, InputOption::VALUE_NONE, 'Send the payload as small text')
             ->addOption('stdin', null, InputOption::VALUE_NONE, 'Read data from stdin');
 
+        self::$app = self::initializeColorFlags($app);
+
         return self::$app;
+    }
+
+    public static function getRayColors(): array
+    {
+        return [
+            'blue', 'gray', 'green', 'orange', 'purple', 'red',
+        ];
+    }
+
+    public static function initializeColorFlags(Command $command): Command
+    {
+        foreach (self::getRayColors() as $color) {
+            $command->addOption($color, null, InputOption::VALUE_NONE, "Send a payload color of {$color}");
+        }
+
+        return $command;
     }
 }

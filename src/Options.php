@@ -18,6 +18,14 @@ class Options
     public bool $small = false;
     public bool $stdin = false;
 
+    // colors
+    public bool $blue = false;
+    public bool $gray = false;
+    public bool $green = false;
+    public bool $orange = false;
+    public bool $purple = false;
+    public bool $red = false;
+
     public ?string $data = '';
     public ?string $filename = null;
 
@@ -86,6 +94,16 @@ class Options
         $result->notify = (bool)self::getOption($input, 'notify', false);
         $result->small = (bool)self::getOption($input, 'small', false);
         $result->stdin = (bool)self::getOption($input, 'stdin', false);
+
+        // color options
+        foreach (Utilities::getRayColors() as $color) {
+            $result->{$color} = (bool)self::getOption($input, $color, false);
+
+            // use the first flag found, in case multiple color flags are passed
+            if ($result->{$color}) {
+                break;
+            }
+        }
     }
 
     /**
@@ -135,7 +153,7 @@ class Options
         return $result;
     }
 
-    protected static function isJsonString($text): bool
+    public static function isJsonString($text): bool
     {
         if (!is_string($text) || empty($text)) {
             return false;
@@ -150,7 +168,7 @@ class Options
         return true;
     }
 
-    protected static function formatStringForHtmlPayload(string $text): string
+    public static function formatStringForHtmlPayload(string $text): string
     {
         $encodedText = str_replace(' ', '&nbsp;', htmlentities($text));
 
@@ -159,17 +177,20 @@ class Options
 
     /**
      * @param InputInterface $input
+     *
      * @return bool
      */
     protected function processScreenOption(InputInterface $input): void
     {
         if (!$input->hasOption('screen')) {
             $this->screen = null;
+
             return;
         }
 
         if ($input->hasOption('screen') && $input->getOption('screen') === null) {
             $this->screen = null;
+
             return;
         }
 
@@ -189,8 +210,6 @@ class Options
             $this->screen = ' ';
             $this->clear = false;
         }
-
-
     }
 
     protected function processClearScreenOption(InputInterface $input): void

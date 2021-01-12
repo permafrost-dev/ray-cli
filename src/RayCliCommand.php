@@ -24,6 +24,7 @@ class RayCliCommand extends Command
 
         $this->sendInitialPayload($this->options)
             ->sendColorPayload($this->options)
+            ->sendNamedColorPayload($this->options)
             ->sendSizePayload($this->options);
 
         $output->writeln('<info>Sent data to Ray.</info>');
@@ -114,6 +115,17 @@ class RayCliCommand extends Command
         if ($options->small) {
             $this->payload->small();
             //$this->updatePayload($this->payload->size('small'), false);
+        }
+
+        return $this;
+    }
+
+    protected function sendNamedColorPayload(Options $options): self
+    {
+        foreach(Utilities::getRayColors() as $color) {
+            if ($options->{$color}) {
+                $this->updatePayload($this->payload->{$color}());
+            }
         }
 
         return $this;
