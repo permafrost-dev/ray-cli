@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-<img src="https://img.shields.io/packagist/v/permafrost-dev/ray-cli" alt="version"/> <img src="https://img.shields.io/packagist/l/permafrost-dev/ray-cli" alt="license"/> <img src="https://img.shields.io/packagist/dt/permafrost-dev/ray-cli" alt="downloads"/> <img src="https://img.shields.io/github/workflow/status/permafrost-dev/ray-cli/Run%20Tests/main" alt="Run Tests"/>
+<img src="https://img.shields.io/packagist/v/permafrost-dev/ray-cli" alt="version"/> <img src="https://img.shields.io/packagist/l/permafrost-dev/ray-cli" alt="license"/> <img src="https://img.shields.io/packagist/dt/permafrost-dev/ray-cli" alt="downloads"/> <img src="https://img.shields.io/github/workflow/status/permafrost-dev/ray-cli/Run%20Tests/main" alt="Run Tests"/> <img src="https://coveralls.io/repos/github/permafrost-dev/ray-cli/badge.svg?branch=main" alt="Coverage Status" />
 </p>
 
 <br>
