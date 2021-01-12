@@ -3,6 +3,15 @@
 All notable changes to `permafrost-dev/ray-cli` will be documented in this file.
 
 ---
+## 1.3.0 - 2021-01-11
+
+- add `--large` flag to allow sending payloads as large-sized text
+
+- add `--small` flag to allow sending payloads as small-sized text
+
+- update readme with examples of `--large` and `--small`
+
+- fix minor bugs related to `--clear` and `--screen`
 
 ## 1.2.0 - 2021-01-11
 

@@ -63,6 +63,34 @@ Example:
 vendor/bin/ray -c red "hello world"
 ```
 
+### `--large`
+
+Arguments: `none`
+
+Default: `false`
+
+Description: sends the payload as large-sized text.
+
+Example:
+
+```bash
+vendor/bin/ray --large "hello world"
+```
+
+### `--small`
+
+Arguments: `none`
+
+Default: `false`
+
+Description: sends the payload as small-sized text.
+
+Example:
+
+```bash
+vendor/bin/ray --small "hello world"
+```
+
 ### `--label` or `-L`
 
 Arguments: `string`
