@@ -3,6 +3,17 @@
 All notable changes to `permafrost-dev/ray-cli` will be documented in this file.
 
 ---
+
+## 1.3.1 - 2021-01-11
+
+- ensure data is only sent to Ray when appropriate
+
+- code optimization, reorganization, cleanup
+
+- add additional code for building phar
+
+- set the application version _(displayed with `ray --version`)_
+
 ## 1.3.0 - 2021-01-11
 
 - add `--large` flag to allow sending payloads as large-sized text
@@ -29,7 +40,7 @@ All notable changes to `permafrost-dev/ray-cli` will be documented in this file.
 
 ## 1.1.0 - 2021-01-10
 
-- fix autodetection of json strings
+- fix autodetection of JSON strings
 - if a valid filename is passed as the only argument, the content of the file is sent to Ray (JSON is autodetected)
 
 ## 1.0.3 - 2021-01-10
