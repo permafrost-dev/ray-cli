@@ -140,6 +140,18 @@ class RayCliCommandTest extends TestCase
 
         $tester->execute(['command' => 'send', 'data' => 'test string', '-s' => null]);
         $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+
+        $tester->execute(['command' => 'send', 'data' => 'test string', '-s' => '-']);
+        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+
+        $tester->execute(['command' => 'send', 'data' => 'test string', '--screen' => ' ']);
+        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+
+        $tester->execute(['command' => 'send', '--screen' => 'test']);
+        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+
+        $tester->execute(['command' => 'send', '--screen' => '']);
+        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
     }
 
     /** @test */
