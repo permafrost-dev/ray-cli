@@ -4,6 +4,10 @@ All notable changes to `permafrost-dev/ray-cli` will be documented in this file.
 
 ---
 
+## 1.3.2 - 2020-01-11
+
+- fix bug in `Utilities::initializeCommand()`
+
 ## 1.3.1 - 2021-01-11
 
 - ensure data is only sent to Ray when appropriate
