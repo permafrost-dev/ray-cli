@@ -4,7 +4,7 @@ All notable changes to `permafrost-dev/ray-cli` will be documented in this file.
 
 ---
 
-## 1.5.0 - 2021-01-12 (unrelease)
+## 1.5.0 - 2021-01-12
 
 - add `--sm` and `--lg` flags as shorter versions of `--small` and `--large`
 
