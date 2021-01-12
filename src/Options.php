@@ -16,6 +16,7 @@ class Options
     public string $label = '';
     public bool $large = false;
     public bool $notify = false;
+    public bool $raw = false;
     public ?string $screen = null;
     public ?string $size = null;
     public bool $small = false;
@@ -41,7 +42,7 @@ class Options
     {
         $result = new self();
 
-        self::loadOptionsFromInput($input, $result);
+        $result->loadOptionsFromInput($input);
 
         $result->data = $result->getData($input);
         $result->jsonData = $result->getJsonData($input);
@@ -57,19 +58,12 @@ class Options
             $result->data = '';
         }
 
-        if (!empty($result->data) && file_exists($result->data) && is_file($result->data)) {
-            $result->filename = realpath($result->data);
-            $content = file_get_contents($result->filename);
+        $isValidFile = !empty($result->data)
+            && file_exists($result->data)
+            && is_file($result->data);
 
-            $result->data = self::formatStringForHtmlPayload($content);
-
-            if (self::isJsonString($result->data)) {
-                $result->jsonData = json_decode($result->data, true);
-            } elseif (empty($result->label)) {
-                // if no label exists, use the filename
-                // this only applies to non-json files
-                $result->label = $result->filename ?? '(unknown filename)';
-            }
+        if ($isValidFile) {
+            $result->loadFileContentAsData();
         }
 
         return $result;
@@ -79,56 +73,32 @@ class Options
      * Loads options from `$input` into the instance properties.
      *
      * @param InputInterface $input
-     * @param Options $result
+     *
+     * @return Options
      */
-    protected static function loadOptionsFromInput(InputInterface $input, Options $result): void
+    public function loadOptionsFromInput(InputInterface $input): self
     {
         // string options
-        $result->color = self::getOption($input, 'color', null);
-        $result->delimiter = self::getOption($input, 'delimiter', null);
-        $result->label = (string)self::getOption($input, 'label', '');
-        $result->screen = self::getOption($input, 'screen', null);
-        $result->size = self::getOption($input, 'size', null);
+        $this->color = self::getOption($input, 'color', null);
+        $this->delimiter = self::getOption($input, 'delimiter', null);
+        $this->label = (string)self::getOption($input, 'label', '');
+        $this->screen = self::getOption($input, 'screen', null);
+        $this->size = self::getOption($input, 'size', null);
 
         // boolean options
-        $result->clear = (bool)self::getOption($input, 'clear', false);
-        $result->csv = (bool)self::getOption($input, 'csv', false);
-        $result->json = (bool)self::getOption($input, 'json', false);
-        $result->large = (bool)self::getOption($input, 'large', false);
-        $result->notify = (bool)self::getOption($input, 'notify', false);
-        $result->small = (bool)self::getOption($input, 'small', false);
-        $result->stdin = (bool)self::getOption($input, 'stdin', false);
+        $this->clear = (bool)self::getOption($input, 'clear', false);
+        $this->csv = (bool)self::getOption($input, 'csv', false);
+        $this->json = (bool)self::getOption($input, 'json', false);
+        $this->large = (bool)self::getOption($input, 'large', false);
+        $this->notify = (bool)self::getOption($input, 'notify', false);
+        $this->raw = (bool)self::getOption($input, 'raw', false);
+        $this->small = (bool)self::getOption($input, 'small', false);
+        $this->stdin = (bool)self::getOption($input, 'stdin', false);
 
-        // boolean alias options
-        if (!$result->large) {
-            $result->large = (bool)self::getOption($input, 'lg', false);
-        }
-        if (!$result->small) {
-            $result->small = (bool)self::getOption($input, 'sm', false);
-        }
+        $this->loadSizeOptions($input);
+        $this->loadColorOptions($input);
 
-        if (in_array($result->size, ['large', 'lg'], true)) {
-            $result->large = true;
-        }
-
-        if (in_array($result->size, ['small', 'sm'], true)) {
-            $result->small = true;
-        }
-
-        if (in_array($result->size, ['normal'], true)) {
-            $result->large = false;
-            $result->small = false;
-        }
-
-        // color options
-        foreach (Utilities::getRayColors() as $color) {
-            $result->{$color} = (bool)self::getOption($input, $color, false);
-
-            // use the first flag found, in case multiple color flags are passed
-            if ($result->{$color}) {
-                break;
-            }
-        }
+        return $this;
     }
 
     /**
@@ -155,16 +125,29 @@ class Options
         return $input->getOption($name);
     }
 
+    /**
+     * Gets the value of the "data" argument passed on the command line.
+     * If the value of data === '-' or the --stdin flag was passed,
+     * the data is read from stdin instead.
+     *
+     * @param InputInterface $input
+     *
+     * @return string|null
+     */
     public function getData(InputInterface $input): ?string
     {
-        if ($this->stdin) {
+        $data = $input->getArgument('data');
+
+        if ($this->stdin || $data === '-') {
             return file_get_contents($this->stdinFile);
         }
 
-        return $input->getArgument('data');
+        return $data;
     }
 
     /**
+     * Returns decoded JSON data.
+     *
      * @param InputInterface $input
      *
      * @return mixed|null
@@ -215,19 +198,6 @@ class Options
      */
     public function processScreenOption(InputInterface $input): void
     {
-//        if (!$this->getOption($input, 'screen', false)) {
-//            $this->screen = null;
-//
-//            return;
-//        }
-
-//
-//        if (!$input->hasOption('screen') || $input->getOption('screen') === false) {
-//            $this->screen = null;
-//
-//            return;
-//        }
-
         if ($input->hasOption('screen') && $input->getOption('screen') === null) {
             $this->screen = null;
 
@@ -263,9 +233,84 @@ class Options
         }
     }
 
+    /**
+     * Load size options into the class instance.
+     *
+     * @param InputInterface $input
+     *
+     * @return Options
+     */
+    protected function loadSizeOptions(InputInterface $input): self
+    {
+        // map --lg to --large and --sm to --small
+        $aliases = ['large' => 'lg', 'small' => 'sm'];
+
+        foreach ($aliases as $long => $short) {
+            if (!$this->{$long}) {
+                $this->{$long} = (bool)self::getOption($input, $short, false);
+            }
+            if (in_array($this->size, [$long, $short], true)) {
+                $this->{$long} = true;
+            }
+        }
+
+        if ($this->size === 'normal') {
+            $this->large = false;
+            $this->small = false;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Options
+     */
+    public function loadFileContentAsData(): self
+    {
+        $this->filename = realpath($this->data);
+        $content = file_get_contents($this->filename);
+
+        if (!$this->raw) {
+            $this->data = self::formatStringForHtmlPayload($content);
+        } else {
+            $this->data = $content;
+        }
+
+        if (self::isJsonString($this->data)) {
+            $this->jsonData = json_decode($this->data, true);
+        } elseif (empty($this->label)) {
+            // if no label exists, use the filename
+            // this only applies to non-json files
+            $this->label = $this->filename ?? '(unknown filename)';
+        }
+
+        return $this;
+    }
+
     public function resetSizes(): void
     {
         $this->large = false;
         $this->small = false;
+    }
+
+    /**
+     * Loads color options into the class instance.
+     *
+     * @param InputInterface $input
+     *
+     * @return Options
+     */
+    public function loadColorOptions(InputInterface $input): self
+    {
+        foreach (Utilities::getRayColors() as $color) {
+            $this->{$color} = (bool)self::getOption($input, $color, false);
+
+            // use the first flag found, in case multiple color flags are passed
+            if ($this->{$color}) {
+                break;
+            }
+        }
+
+        return $this;
     }
 }

@@ -137,4 +137,47 @@ class OptionsTest extends TestCase
         $options->processScreenOption($input1);
         $this->assertEquals(null, $options->screen);
     }
+
+    /** @test */
+    public function it_loads_the_color_options(): void
+    {
+        $definition1 = new InputDefinition([
+            new InputArgument('data', InputArgument::OPTIONAL),
+            new InputOption('green', null, InputOption::VALUE_NONE),
+            new InputOption('blue', null, InputOption::VALUE_NONE),
+        ]);
+
+        $input1 = new ArgvInput(['bin/ray', '"test string"', '--blue'], $definition1);
+        $options = new Options();
+
+        $this->assertFalse($options->blue);
+
+        $options->loadColorOptions($input1);
+
+        $this->assertTrue($options->blue);
+        $this->assertFalse($options->green);
+    }
+
+    /** @test */
+    public function it_loads_files_as_the_payload(): void
+    {
+        $definition1 = new InputDefinition([
+            new InputArgument('data', InputArgument::OPTIONAL),
+            new InputOption('raw', null, InputOption::VALUE_NONE),
+        ]);
+
+        $input1 = new ArgvInput(['bin/ray', __DIR__ . '/testfile.json'], $definition1);
+        $options = new Options();
+        $options->raw = true;
+        $options->data = __DIR__ . '/testfile.json';
+        $options->filename = __DIR__ . '/testfile.json';
+
+        $options->loadFileContentAsData();
+
+        $this->assertStringEqualsFile(__DIR__ . '/testfile.json', $options->data);
+        $this->assertIsArray($options->jsonData);
+        $this->assertNotEmpty($options->jsonData);
+    }
+
+
 }

@@ -71,6 +71,7 @@ class Utilities
      *
      * if not running as a phar, the installed package version is used.
      *
+     * @param null|mixed $installedVersions
      * @return string
      */
     public static function getPackageVersion(): string
@@ -82,21 +83,16 @@ class Utilities
         $version = 'v@git-version@';
 
         if (strpos($version, 'v@git') === 0 || !self::runningAsPhar()) {
-            $version = \Composer\InstalledVersions::getPrettyVersion(self::PACKAGE_NAME);
+            $version = '';
+
+            if (class_exists(\Composer\InstalledVersions::class)) {
+                $version = \Composer\InstalledVersions::getPrettyVersion(self::PACKAGE_NAME);
+            }
 
             if (is_numeric($version[0] ?? '')) {
                 $version = "v$version";
             }
         }
-
-        if (empty($version)) {
-            $version = 'v1.x';
-        }
-
-//        // ensure the version string is prefixed with 'v'
-//        if ($version[0] ?? '' !== 'v' && $version !== 'dev-main') {
-//            $version = "v$version";
-//        }
 
         return empty($version) ? 'v1.x' : $version;
     }
@@ -135,6 +131,7 @@ class Utilities
             ->addOption('large', null, InputOption::VALUE_NONE, 'Send the payload as large text')
             ->addOption('lg', null, InputOption::VALUE_NONE, 'Send the payload as large text')
             ->addOption('notify', 'N', InputOption::VALUE_NONE, 'Sends a notification payload')
+            ->addOption('raw', 'R', InputOption::VALUE_NONE, 'Don\'t preprocess strings before sending')
             ->addOption('screen', 's', InputOption::VALUE_OPTIONAL, 'Create a new screen with an optional name')
             ->addOption('size', 'S', InputOption::VALUE_REQUIRED, 'Send the payload text size (sm/lg)')
             ->addOption('small', null, InputOption::VALUE_NONE, 'Send the payload as small text')

@@ -16,6 +16,17 @@ class RayCliCommand extends Command
 
     public function execute(InputInterface $input, ?OutputInterface $output)
     {
+//       $a = ray()->sendCustom('hello 1a');
+//       sleep(4);
+//       $a->remove();
+//
+//       ray()->sendCustom('hello 1b');
+
+        //$myscreen1->sendCustom('hello 1a');
+        //$myscreen2->sendCustom('hello 2b');
+
+//        return 0;
+
         $this->initializeCommand($input);
 
         if (!$this->ensureDataExistsToSend($this->options, $output)) {
@@ -109,12 +120,10 @@ class RayCliCommand extends Command
     {
         if ($options->large) {
             $this->payload->large();
-            //$this->updatePayload($this->payload->size('large'), false);
         }
 
         if ($options->small) {
             $this->payload->small();
-            //$this->updatePayload($this->payload->size('small'), false);
         }
 
         return $this;
@@ -122,7 +131,7 @@ class RayCliCommand extends Command
 
     public function sendNamedColorPayload(Options $options): self
     {
-        foreach(Utilities::getRayColors() as $color) {
+        foreach (Utilities::getRayColors() as $color) {
             if ($options->{$color}) {
                 $this->updatePayload($this->payload->{$color}());
             }
@@ -163,7 +172,6 @@ class RayCliCommand extends Command
         return false;
     }
 
-
     protected function sendNotification(Options $options): self
     {
         // send a notification payload
@@ -186,7 +194,6 @@ class RayCliCommand extends Command
 
         return $this;
     }
-
 
     protected function sendClearScreen(Options $options): self
     {
