@@ -12,6 +12,7 @@ class UtilitiesTest extends TestCase
     {
         parent::setUp();
 
+        $_ENV['APP_ENV'] = 'testing';
         putenv('APP_ENV=testing');
     }
 
@@ -61,7 +62,8 @@ class UtilitiesTest extends TestCase
     public function it_detects_when_not_running_unit_tests(): void
     {
         $_ENV['APP_ENV'] = 'not_testing';
-        putenv('APP_ENV=not_testing');
+        unset($_ENV['APP_ENV']);
+        putenv('APP_ENV=');
 
         $this->assertFalse(Utilities::isRunningUnitTests());
     }
