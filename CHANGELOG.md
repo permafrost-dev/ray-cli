@@ -4,6 +4,14 @@ All notable changes to `permafrost-dev/ray-cli` will be documented in this file.
 
 ---
 
+## 1.6.0 - 2021-01-12
+
+- add `--raw` flag to send contents without any pre-processing, such as sending the contents of an html file _(without `--raw`, the source will display instead)
+
+- specifying the payload as  as dash `"-"` is now treated as an indicator that data should be read from `stdin` _(this is the same as specifying `--stdin`)._
+
+- code cleanup & reorganization
+
 ## 1.5.0 - 2021-01-12
 
 - add `--sm` and `--lg` flags as shorter versions of `--small` and `--large`

@@ -31,7 +31,7 @@ vendor/bin/ray 'test message' --green --large
 _would become:_
 
 ```bash
-ray-1.4.0.phar 'test message' --green --large
+ray-1.6.0.phar 'test message' --green --large
 ```
 
 ---
@@ -111,11 +111,11 @@ vendor/bin/ray --sm "hello world"
 
 Arguments: `string`
 
-Default: `none`
+Default: `normal`
 
 Possible Values: `large`, `lg`, `small`, `sm`, `normal`
 
-Description: sends a payload with the specified text size.  See `--large` and `--small`.
+Description: sends a payload with the specified text size.  See `--large` and `--small`.  _Note that while included for completeness, specifying `normal` is not necessary as it is the default text size._
 
 Example:
 
@@ -201,12 +201,28 @@ Arguments: `none`
 
 Default: `false`
 
-Description: Reads the payload data from the standard input instead of as a command line parameter.
+Description: Reads the payload data from the standard input instead of as a command line parameter.  Note that the payload data can be specified as as dash _(`"-"`)_ instead of specifying the `--stdin` flag.
 
 Example:
 
 ```bash
 echo "hello world" | vendor/bin/ray --stdin
+echo "hello world" | vendor/bin/ray -
+```
+
+### `--raw`
+
+Arguments: `none`
+
+Default: `false`
+
+Description: Forces the payload data to skip pre-processing.  Normally, the data is processed to encode HTML entities, spaces, and converts new lines to `<br>` tags _(this is done to display HTML source code)_.
+
+Example:
+
+```bash
+cat sample.html | vendor/bin/ray --stdin --raw
+vendor/bin/ray --raw sample.html
 ```
 
 ### `--screen` or `-s`
