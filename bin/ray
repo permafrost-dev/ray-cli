@@ -7,42 +7,23 @@ if (file_exists(__DIR__ . '/../../../autoload.php')) {
 } elseif (file_exists(__DIR__ . '/../vendor/autoload.php')) {
     // load autoload file when in development
     require_once __DIR__ . '/../vendor/autoload.php';
+} elseif (file_exists(getcwd() . '/vendor/autoload.php')) {
+    // last-ditch effort to load the composer autoloader file
+    require_once getcwd() . '/vendor/autoload.php';
+} else {
+    // no autoload.php file was located
+    throw new \RuntimeException('Could not find an autoloader file.');
 }
 
 use Permafrost\RayCli\RayCliCommand;
+use Permafrost\RayCli\Utilities;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\SingleCommandApplication;
 
-use function Permafrost\RayCli\initialize_command;
-
-/**
- * This returns the package version, using a magic placeholder for the git tag version
- * when building the phar binary.
- *
- * if not running as a phar, the installed package version is used.
- *
- * @return string
- */
-function getVersion(): string
-{
-    $version = 'v@git-version@';
-
-    if (strpos($version, 'v@git-') === 0) {
-        $version = \Composer\InstalledVersions::getPrettyVersion('permafrost-dev/ray-cli');
-    }
-
-    if ($version === null) {
-        $version = 'v1.x.x';
-    }
-
-    return $version;
-}
-
-    initialize_command(new SingleCommandApplication())
-        ->setName('ray command line interface')
-        ->setDescription('Interact with and send data to Ray from the command line (https://myray.app)')
-        ->setCode(function (ArgvInput $input, OutputInterface $output) {
-            return (new RayCliCommand())->execute($input, $output);
-        })
-        ->run();
+Utilities::initializeCommand(new SingleCommandApplication())
+    ->setName('ray command line interface')
+    ->setCode(function (ArgvInput $input, OutputInterface $output) {
+        return (new RayCliCommand())->execute($input, $output);
+    })
+    ->run();

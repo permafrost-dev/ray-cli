@@ -3,12 +3,11 @@
 namespace Permafrost\RayCli\Tests;
 
 use Permafrost\RayCli\RayCliCommand;
+use Permafrost\RayCli\Utilities;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
-
-use function Permafrost\RayCli\initialize_command;
 
 class RayCliCommandTest extends TestCase
 {
@@ -47,7 +46,7 @@ class RayCliCommandTest extends TestCase
         $app = (new Application())
             ->add($command);
 
-        return initialize_command($app);
+        return Utilities::initializeCommand($app);
     }
 
     /** @test */

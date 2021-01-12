@@ -16,8 +16,13 @@ class RayCliCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->initializeCommand($input)
-            ->sendInitialPayload($this->options)
+        $this->initializeCommand($input);
+
+        if (!$this->ensureDataExistsToSend($this->options, $output)) {
+            return Command::FAILURE;
+        }
+
+        $this->sendInitialPayload($this->options)
             ->sendColorPayload($this->options)
             ->sendSizePayload($this->options);
 
@@ -32,6 +37,20 @@ class RayCliCommand extends Command
         $this->payload = ray();
 
         return $this;
+    }
+
+    protected function ensureDataExistsToSend(Options $options, OutputInterface $output): bool
+    {
+        if (!$options->data && !$options->stdin && !$options->clear && !$options->screen) {
+            $usage = Utilities::$app->getSynopsis(false);
+
+            $output->writeln("<info>Usage:</info> {$usage}");
+            $output->writeln('');
+
+            return false;
+        }
+
+        return true;
     }
 
     /**
