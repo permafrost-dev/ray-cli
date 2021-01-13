@@ -71,7 +71,8 @@ class Utilities
      *
      * if not running as a phar, the installed package version is used.
      *
-     * @param null|mixed $installedVersions
+     * @param mixed|null $installedVersions
+     *
      * @return string
      */
     public static function getPackageVersion(): string
