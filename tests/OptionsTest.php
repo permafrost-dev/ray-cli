@@ -130,7 +130,6 @@ class OptionsTest extends TestCase
         $input1 = new ArgvInput(['bin/ray', '"test string"'], $definition1);
         $input2 = new ArgvInput(['bin/ray', '-s', 'test1', '"my string"'], $definition2);
 
-
         $options = new Options();
         //$options->screen = '';
 
@@ -178,6 +177,4 @@ class OptionsTest extends TestCase
         $this->assertIsArray($options->jsonData);
         $this->assertNotEmpty($options->jsonData);
     }
-
-
 }

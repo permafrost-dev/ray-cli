@@ -7,7 +7,6 @@ use PHPUnit\Framework\TestCase;
 
 class UtilitiesTest extends TestCase
 {
-
     protected function setUp(): void
     {
         parent::setUp();
