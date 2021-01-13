@@ -16,17 +16,6 @@ class RayCliCommand extends Command
 
     public function execute(InputInterface $input, ?OutputInterface $output)
     {
-//       $a = ray()->sendCustom('hello 1a');
-//       sleep(4);
-//       $a->remove();
-//
-//       ray()->sendCustom('hello 1b');
-
-        //$myscreen1->sendCustom('hello 1a');
-        //$myscreen2->sendCustom('hello 2b');
-
-//        return 0;
-
         $this->initializeCommand($input);
 
         if (!$this->ensureDataExistsToSend($this->options, $output)) {
