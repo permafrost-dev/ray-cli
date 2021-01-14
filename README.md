@@ -5,10 +5,8 @@
 </p>
 
 <p align="center">
-<img src="https://img.shields.io/packagist/v/permafrost-dev/ray-cli" alt="version"/>  <img src="https://img.shields.io/packagist/l/permafrost-dev/ray-cli" alt="license"/> <img src="https://img.shields.io/packagist/dt/permafrost-dev/ray-cli?logo=packagist" alt="downloads"/> <img src="https://img.shields.io/github/workflow/status/permafrost-dev/ray-cli/Run%20Tests/main?logo=github" alt="Run Tests"/> <img src="https://coveralls.io/repos/github/permafrost-dev/ray-cli/badge.svg" alt="Coverage Status" />
+<img src="https://img.shields.io/packagist/v/permafrost-dev/ray-cli" alt="version"/>  <img src="https://img.shields.io/packagist/l/permafrost-dev/ray-cli" alt="license"/> <img src="https://img.shields.io/packagist/dt/permafrost-dev/ray-cli?logo=packagist" alt="downloads"/> <img src="https://img.shields.io/github/workflow/status/permafrost-dev/ray-cli/Run%20Tests/main?logo=github" alt="Run Tests"/> <img src="https://shields.io/coveralls/github/permafrost-dev/ray-cli" alt="Coverage Status" />
 </p>
-
-<br>
 
 This package provides a command-line interface for interacting with the [Ray](https://myray.app) application by [Spatie](https://github.com/spatie).
 
@@ -18,9 +16,15 @@ Supported PHP versions: `7.4`, `8.0`.
 
 ## Installation
 
+You may install the package using composer:
+
 `composer require permafrost-dev/ray-cli --dev`
 
-You may also download a `phar` executable from the [releases](https://github.com/permafrost-dev/ray-cli/releases) page.  The primary advantage of using a `phar` is that **you don't need to install the package** into your project.
+
+
+Also available is a download for  a `phar` executable from the [releases](https://github.com/permafrost-dev/ray-cli/releases) page.  The primary advantage of using a `phar` is that **you don't need to install the package** into your project.
+
+
 
 If you download  a `phar`, replace _`vendor/bin/ray`_ with the filename of the `phar` in the examples, i.e.:
 
@@ -33,6 +37,8 @@ _would become:_
 ```bash
 ray-1.6.0.phar 'test message' --green --large
 ```
+
+_Note: Some users may need to set the phar as executable using `chmod`. Example: `chmod +x ray-1.6.0.phar`_
 
 ---
 
@@ -57,11 +63,11 @@ vendor/bin/ray "testfile.json" -c green
 vendor/bin/ray "readme.txt"
 ```
 
-You can even pass a valid URL &dash; it will be downloaded and sent to Ray, with automatic JSON detection.
+You can even pass a valid URL - it will be downloaded and sent to Ray, with automatic JSON detection.
 
 ```bash
 vendor/bin/ray "https://github.com/permafrost-dev/ray-cli" -c green
-vendor/bin/ray "https://api.github.com/repos/permafrost-dev/ray-cli" --green
+vendor/bin/ray "https://api.github.com/repos/permafrost-dev/ray-cli"
 ```
 
 ---
