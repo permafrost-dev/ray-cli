@@ -294,18 +294,20 @@ class Options
         $this->filename = realpath($this->data);
         $content = file_get_contents($this->filename);
 
-        if (!$this->raw) {
-            $this->data = self::formatStringForHtmlPayload($content);
-        } else {
-            $this->data = $content;
+        if (empty($this->label)) {
+            $this->label = $this->filename ?? '(unknown filename)';
         }
+
+        if ($this->raw) {
+            $this->data = self::formatStringForHtmlPayload($content);
+
+            return $this;
+        }
+
+        $this->data = $content;
 
         if (self::isJsonString($this->data)) {
             $this->jsonData = json_decode($this->data, true);
-        } elseif (empty($this->label)) {
-            // if no label exists, use the filename
-            // this only applies to non-json files
-            $this->label = $this->filename ?? '(unknown filename)';
         }
 
         return $this;
