@@ -76,6 +76,7 @@ class RayCliCommand extends Command
         $this->sendNotification($options)
             ->sendNewScreen($options)
             ->sendClearScreen($options) // takes precedence over screen, so call after sendNewScreen()
+            ->retrieveRequestedUrl($options) // must be done before the sendXXX methods
             ->sendDelimitedList($options)
             ->sendDecodedJson($options)
             ->sendCustomData($options); // must be called last
@@ -217,6 +218,20 @@ class RayCliCommand extends Command
         if ($options->jsonData || $options->json) {
             $this->updatePayload($this->payload->json($options->data));
         }
+
+        return $this;
+    }
+
+    protected function retrieveRequestedUrl(Options $options): self
+    {
+        $client = new UrlClient();
+
+        $data = $client->retrieve('get', $options->url);
+
+        $options->label = $options->url ?? 'URL';
+        $options->data = $data;
+        $options->json = $options::isJsonString($data);
+        $options->filename = null;
 
         return $this;
     }

@@ -41,6 +41,7 @@ class Options
 
     public ?string $data = '';
     public ?string $filename = null;
+    public ?string $url = null;
 
     /** @var string|string[]|array|mixed|null */
     public $jsonData = null;
@@ -55,6 +56,7 @@ class Options
 
         $result->data = $result->getData($input);
         $result->jsonData = $result->getJsonData($input);
+        $result->url = $result->getUrl($input);
 
         if (!$result->delimiter && $result->csv) {
             $result->delimiter = ',';
@@ -176,6 +178,19 @@ class Options
         }
 
         return $result;
+    }
+
+    protected function getUrl(InputInterface $input)
+    {
+        if (!is_string($this->data) || $this->json) {
+            return null;
+        }
+
+        if (!parse_url($this->data) || strpos($this->data, 'http') !== 0) {
+            return null;
+        }
+
+        return $this->data;
     }
 
     public static function isJsonString($text): bool
