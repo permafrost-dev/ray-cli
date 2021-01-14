@@ -11,6 +11,7 @@
     "require": {
         "php": "^7.4|^8.0",
         "ext-curl": "*",
+        "ext-json": "*",
         "spatie/ray": "^1.7",
         "symfony/console": "^5.2"
     },
