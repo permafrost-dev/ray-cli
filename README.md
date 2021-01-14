@@ -57,6 +57,13 @@ vendor/bin/ray "testfile.json" -c green
 vendor/bin/ray "readme.txt"
 ```
 
+You can even pass a valid URL &dash; it will be downloaded and sent to Ray, with automatic JSON detection.
+
+```bash
+vendor/bin/ray "https://github.com/permafrost-dev/ray-cli" -c green
+vendor/bin/ray "https://api.github.com/repos/permafrost-dev/ray-cli" --green
+```
+
 ---
 
 ## Available Options

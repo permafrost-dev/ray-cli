@@ -4,7 +4,16 @@ All notable changes to `permafrost-dev/ray-cli` will be documented in this file.
 
 ---
 
-## 1.7.0 - 2021-01-12
+## 1.8.0 - 2021-01-14
+
+- when a url is passed as the data argument, it is retrieved and the results are displayed in Ray.  JSON data is automatically detected.
+
+- code cleanup
+
+- increased test coverage
+
+
+## 1.7.0 - 2021-01-13
 
 - add `--bg-<color>` flags to specify the background color of the payload.  Available colors are: blue, gray, green, orange, purple, red.
 
