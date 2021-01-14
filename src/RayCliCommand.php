@@ -16,6 +16,8 @@ class RayCliCommand extends Command
 
     public function execute(InputInterface $input, ?OutputInterface $output)
     {
+        $this->checkForUpdates($output);
+
         $this->initializeCommand($input);
 
         if (!$this->ensureDataExistsToSend($this->options, $output)) {
@@ -82,6 +84,19 @@ class RayCliCommand extends Command
             ->sendCustomData($options); // must be called last
 
         return $this;
+    }
+
+    /** @codeCoverageIgnore */
+    protected function checkForUpdates(OutputInterface $output): void
+    {
+        $checker = UpdateChecker::create();
+
+        $latest = $checker->retrieveLatestRelease();
+
+        if ($checker->isUpdateAvailable($latest, null)) {
+            $output->writeln("<info>There is a new release available: $latest</info>");
+            $output->writeln("<info>You can download it from https://github.com/permafrost-dev/ray-cli/releases/tag/$latest</info>\n");
+        }
     }
 
     protected function updatePayload(Ray $payload, bool $markUpdated = true): void

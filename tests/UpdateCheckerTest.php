@@ -24,16 +24,17 @@ class UpdateCheckerTest extends TestCase
 
         $this->assertFalse($checker->isUpdateAvailable('2.0.0', ''));
         $this->assertFalse($checker->isUpdateAvailable('', '1.8.0'));
+        $this->assertFalse($checker->isUpdateAvailable('2.0.0', null));
     }
 
     /** @test */
     public function it_retrieves_the_latest_releases_data(): void
     {
         $checker = new UpdateChecker();
-        $data = $checker->retrieveLatestRelease();
+        $data = $checker->retrieveLatestReleaseData();
 
         $this->assertNotNull($data);
-        $this->assertJson($data);
+        $this->assertNotEmpty($data);
     }
 
     /** @test */
