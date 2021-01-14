@@ -4,12 +4,15 @@ All notable changes to `permafrost-dev/ray-cli` will be documented in this file.
 
 ---
 
+## 1.9.0 - 2021-01-14 (unreleased)
+
+- change the way that `--raw` works so that it displays the raw content of a file, even if it is html (previously it worked in the reverse, which didn't make sense).
+
 ## 1.8.1 - 2021-01-14
 
 - minor change to the way the url request method is set
 
 - minor tweaks to unit tests for url client
-
 
 ## 1.8.0 - 2021-01-14
 
@@ -18,7 +21,6 @@ All notable changes to `permafrost-dev/ray-cli` will be documented in this file.
 - code cleanup
 
 - increased test coverage
-
 
 ## 1.7.0 - 2021-01-13
 

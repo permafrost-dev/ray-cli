@@ -187,7 +187,7 @@ Default: `false`
 
 Accepted Values: `none`
 
-Description: Forces the payload data to skip pre-processing.  Normally, the data is processed to encode HTML entities, spaces, and converts new lines to `<br>` tags _(this is done to display HTML source code)_.
+Description: Forces the payload data be pre-processed and to display the raw, unrendered content. The data is processed to encode HTML entities, spaces, and converts new lines to `<br>` tags *(this is done to display HTML source code)*.
 
 Examples:
 

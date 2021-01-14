@@ -20,11 +20,7 @@ You may install the package using composer:
 
 `composer require permafrost-dev/ray-cli --dev`
 
-
-
 Also available is a download for  a `phar` executable from the [releases](https://github.com/permafrost-dev/ray-cli/releases) page.  The primary advantage of using a `phar` is that **you don't need to install the package** into your project.
-
-
 
 If you download  a `phar`, replace _`vendor/bin/ray`_ with the filename of the `phar` in the examples, i.e.:
 
@@ -229,7 +225,7 @@ Arguments: `none`
 
 Default: `false`
 
-Description: Forces the payload data to skip pre-processing.  Normally, the data is processed to encode HTML entities, spaces, and converts new lines to `<br>` tags _(this is done to display HTML source code)_.
+Description: Forces the payload data be pre-processed and to display the raw, unrendered content.  The data is processed to encode HTML entities, spaces, and converts new lines to `<br>` tags _(this is done to display HTML source code)_.
 
 Example:
 
