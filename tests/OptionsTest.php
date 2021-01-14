@@ -45,6 +45,7 @@ class OptionsTest extends TestCase
     {
         $input1 = new ArgvInput([]);
         $input2 = new ArgvInput(['--clear' => true]);
+        $input3 = new ArgvInput(['--clear' => false]);
 
         $options = new Options();
 
@@ -54,6 +55,10 @@ class OptionsTest extends TestCase
 
         $options->clear = true;
         $options->processClearScreenOption($input2);
+        $this->assertFalse($options->clear);
+
+        $options->clear = true;
+        $options->processClearScreenOption($input3);
         $this->assertFalse($options->clear);
     }
 
@@ -201,7 +206,7 @@ class OptionsTest extends TestCase
 
 
         $this->assertStringEqualsFile(__DIR__ . '/testfile.json', $options->data);
-        $this->assertIsArray($options->jsonData);
-        $this->assertNotEmpty($options->jsonData);
+        $this->assertIsNotArray($options->jsonData);
+        $this->assertNull($options->jsonData);
     }
 }

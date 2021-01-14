@@ -252,7 +252,7 @@ class Options
             $this->clear = false;
         }
 
-        if ($input->hasOption('clear') && $input->getOption('clear') === null) {
+        if ($input->hasOption('clear') && $input->getOption('clear') === false) {
             $this->clear = false;
         }
     }
