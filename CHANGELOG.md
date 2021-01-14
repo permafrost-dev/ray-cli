@@ -4,6 +4,12 @@ All notable changes to `permafrost-dev/ray-cli` will be documented in this file.
 
 ---
 
+## 1.7.0 - 2021-01-12
+
+- add `--bg-<color>` flags to specify the background color of the payload.  Available colors are: blue, gray, green, orange, purple, red.
+
+- code cleanup
+
 ## 1.6.0 - 2021-01-12
 
 - add `--raw` flag to send contents without any pre-processing, such as sending the contents of an html file _(without `--raw`, the source will display instead)
