@@ -50,31 +50,7 @@ class UrlClient
         curl_setopt($curlHandle, CURLINFO_HEADER_OUT, true);
         curl_setopt($curlHandle, CURLOPT_FAILONERROR, true);
 
-        $method = strtolower($method);
-
-        if ($method === 'delete') {
-            curl_setopt($curlHandle, CURLOPT_CUSTOMREQUEST, 'DELETE');
-        }
-
-        if ($method === 'head') {
-            curl_setopt($curlHandle, CURLOPT_CUSTOMREQUEST, 'HEAD');
-        }
-
-        if ($method === 'options') {
-            curl_setopt($curlHandle, CURLOPT_CUSTOMREQUEST, 'OPTIONS');
-        }
-
-        if ($method === 'patch') {
-            curl_setopt($curlHandle, CURLOPT_CUSTOMREQUEST, 'PATCH');
-        }
-
-        if ($method === 'post') {
-            curl_setopt($curlHandle, CURLOPT_POST, true);
-        }
-
-        if ($method === 'put') {
-            curl_setopt($curlHandle, CURLOPT_PUT, true);
-        }
+        curl_setopt($curlHandle, CURLOPT_CUSTOMREQUEST, strtoupper($method));
 
         return $curlHandle;
     }

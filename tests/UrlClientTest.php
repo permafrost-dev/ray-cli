@@ -17,7 +17,7 @@ class UrlClientTest extends TestCase
         $client = new UrlClient();
 
         foreach ($methods as $method => $timeoutMs) {
-            $client->timeoutMs = 150;
+            $client->timeoutMs = 50;
 
             $result = $client->retrieve($method, 'http://localhost:23517/');
 
