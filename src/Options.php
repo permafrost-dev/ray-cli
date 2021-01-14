@@ -298,16 +298,16 @@ class Options
             $this->label = $this->filename ?? '(unknown filename)';
         }
 
+        $this->data = $content;
+
         if ($this->raw) {
             $this->data = self::formatStringForHtmlPayload($content);
 
             return $this;
         }
 
-        $this->data = $content;
-
-        if (self::isJsonString($this->data)) {
-            $this->jsonData = json_decode($this->data, true);
+        if (self::isJsonString($content)) {
+            $this->jsonData = json_decode($content, true);
         }
 
         return $this;

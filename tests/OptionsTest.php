@@ -185,13 +185,20 @@ class OptionsTest extends TestCase
             new InputOption('raw', null, InputOption::VALUE_NONE),
         ]);
 
-        $input1 = new ArgvInput(['bin/ray', __DIR__ . '/testfile.json'], $definition1);
+        $input1 = new ArgvInput(['bin/ray', __DIR__ . '/testfile.json', '--raw'], $definition1);
         $options = new Options();
         $options->raw = true;
         $options->data = __DIR__ . '/testfile.json';
         $options->filename = __DIR__ . '/testfile.json';
 
         $options->loadFileContentAsData();
+
+        //$options->data = json_encode($options->data, JSON_PRETTY_PRINT);
+
+        $options->data = str_replace('&nbsp;', ' ', $options->data);
+        $options->data = html_entity_decode($options->data, ENT_COMPAT, 'UTF-8');
+        $options->data = str_replace('<br />', '', $options->data);
+
 
         $this->assertStringEqualsFile(__DIR__ . '/testfile.json', $options->data);
         $this->assertIsArray($options->jsonData);
