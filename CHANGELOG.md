@@ -4,6 +4,13 @@ All notable changes to `permafrost-dev/ray-cli` will be documented in this file.
 
 ---
 
+## 1.8.1 - 2021-01-14
+
+- minor change to the way the url request method is set
+
+- minor tweaks to unit tests for url client
+
+
 ## 1.8.0 - 2021-01-14
 
 - when a url is passed as the data argument, it is retrieved and the results are displayed in Ray.  JSON data is automatically detected.
