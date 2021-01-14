@@ -10,13 +10,14 @@
     "license": "MIT",
     "require": {
         "php": "^7.4|^8.0",
-        "spatie/ray": "^1.3",
+        "ext-curl": "*",
+        "spatie/ray": "^1.7",
         "symfony/console": "^5.2"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.16",
         "permafrost-dev/phpcsfixer-preset": "^1.5",
-        "phpunit/phpunit": "^9.3"
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {
