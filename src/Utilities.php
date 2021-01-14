@@ -40,10 +40,6 @@ class Utilities
 
         $filesize = filesize($executedFile);
 
-        if ($filesize === false) {
-            $filesize = 0;
-        }
-
         // if the executing file ends with '.phar', we can assume it's a phar file.
         if ($filesize > 2048 && preg_match('~\.phar$~i', $executedFile) === 1) {
             return true;
@@ -157,6 +153,20 @@ class Utilities
             $command->addOption($color, null, InputOption::VALUE_NONE, "Send a payload color of {$color}");
         }
 
+        foreach (self::getRayColors() as $color) {
+            $command->addOption("bg-$color", null, InputOption::VALUE_NONE, "Send a payload background color of {$color}");
+        }
+
         return $command;
     }
+
+    public static function addBackgroundColorToPayload(string $text, ?string $backgroundColor): string
+    {
+        if (!$backgroundColor || empty($backgroundColor)) {
+            return $text;
+        }
+
+        return "<div class=\"bg-{$backgroundColor}-500 w-100 p-2 border-{$backgroundColor}-400 border\">{$text}</div>";
+    }
+
 }

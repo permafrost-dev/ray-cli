@@ -7,6 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 class Options
 {
     public string $stdinFile = 'php://stdin';
+    public ?string $backgroundColor = null;
 
     public bool $clear = false;
     public ?string $color = null;
@@ -29,6 +30,14 @@ class Options
     public bool $orange = false;
     public bool $purple = false;
     public bool $red = false;
+
+    // colors
+    public bool $bg_blue = false;
+    public bool $bg_gray = false;
+    public bool $bg_green = false;
+    public bool $bg_orange = false;
+    public bool $bg_purple = false;
+    public bool $bg_red = false;
 
     public ?string $data = '';
     public ?string $filename = null;
@@ -307,6 +316,17 @@ class Options
 
             // use the first flag found, in case multiple color flags are passed
             if ($this->{$color}) {
+                break;
+            }
+        }
+
+        foreach (Utilities::getRayColors() as $color) {
+            $bgColorVar = "bg_{$color}";
+            $this->{$bgColorVar} = (bool)self::getOption($input, "bg-$color", false);
+
+            // use the first flag found, in case multiple color flags are passed
+            if ($this->{$bgColorVar}) {
+                $this->backgroundColor = $color;
                 break;
             }
         }

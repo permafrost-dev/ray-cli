@@ -225,8 +225,10 @@ class RayCliCommand extends Command
     {
         // send the string argument as the payload with optional label
 
+        $data = Utilities::addBackgroundColorToPayload($options->data, $options->backgroundColor);
+
         if (!$this->updatedPayload) {
-            $this->updatePayload($this->payload->sendCustom($options->data, $options->label));
+            $this->updatePayload($this->payload->sendCustom($data, $options->label));
         }
 
         return $this;
