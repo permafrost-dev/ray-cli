@@ -89,6 +89,11 @@ class RayCliCommand extends Command
     /** @codeCoverageIgnore */
     protected function checkForUpdates(OutputInterface $output): void
     {
+        // 25% chance to check for updates, to avoid repeatedly hitting the github api
+        if (random_int(0, 100) < 75) {
+            return;
+        }
+
         $checker = UpdateChecker::create();
 
         $latest = $checker->retrieveLatestRelease();
