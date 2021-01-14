@@ -291,6 +291,24 @@ vendor/bin/ray --orange "hello world"
 vendor/bin/ray --green --red --blue "hello world"
 ```
 
+## `--bg-blue`, `--bg-gray`, `--bg-green`, `--bg-orange`, `--bg-purple`, `--bg-red`
+
+Arguments: `none`
+
+Default: `false`
+
+Description: causes the payload to be sent with the indicated background color.
+
+Example:
+
+```bash
+vendor/bin/ray --bg-purple --large "hello world"
+```
+
+<p align="center">
+    <img src="https://static.permafrost.dev/images/ray-cli/with-background-color.png" alt="Purple Background" height="200" style="block">
+  </p>
+
 ---
 
 ## Examples
