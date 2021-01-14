@@ -4,9 +4,13 @@ All notable changes to `permafrost-dev/ray-cli` will be documented in this file.
 
 ---
 
-## 1.9.0 - 2021-01-14 (unreleased)
+## 1.9.0 - 2021-01-14
+
+- every time `ray-cli` is executed, there's a 25% chance to make an http call to the github api to check for a new release.  This is done to avoid sending too many http requests during frequent use.  If there is a new release, a message is displayed along with a link where the release can be downloaded.
 
 - change the way that `--raw` works so that it displays the raw content of a file, even if it is html (previously it worked in the reverse, which didn't make sense).
+
+- fix a few minor bugs
 
 ## 1.8.1 - 2021-01-14
 
