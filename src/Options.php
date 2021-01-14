@@ -327,6 +327,7 @@ class Options
             // use the first flag found, in case multiple color flags are passed
             if ($this->{$bgColorVar}) {
                 $this->backgroundColor = $color;
+
                 break;
             }
         }

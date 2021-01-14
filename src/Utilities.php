@@ -168,5 +168,4 @@ class Utilities
 
         return "<div class=\"bg-{$backgroundColor}-500 w-100 p-2 border-{$backgroundColor}-400 border\">{$text}</div>";
     }
-
 }
