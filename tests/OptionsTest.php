@@ -158,6 +158,26 @@ class OptionsTest extends TestCase
     }
 
     /** @test */
+    public function it_loads_the_background_color_options(): void
+    {
+        $definition1 = new InputDefinition([
+            new InputArgument('data', InputArgument::OPTIONAL),
+            new InputOption('bg-green', null, InputOption::VALUE_NONE),
+            new InputOption('bg-blue', null, InputOption::VALUE_NONE),
+        ]);
+
+        $input1 = new ArgvInput(['bin/ray', '"test string"', '--bg-blue'], $definition1);
+        $options = new Options();
+
+        $this->assertFalse($options->bg_blue);
+
+        $options->loadColorOptions($input1);
+
+        $this->assertTrue($options->bg_blue);
+        $this->assertFalse($options->bg_green);
+    }
+
+    /** @test */
     public function it_loads_files_as_the_payload(): void
     {
         $definition1 = new InputDefinition([

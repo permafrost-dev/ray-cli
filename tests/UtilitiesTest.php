@@ -115,4 +115,13 @@ class UtilitiesTest extends TestCase
         $this->assertGreaterThanOrEqual(4, count(Utilities::getRayColors()));
         $this->assertContains('green', Utilities::getRayColors());
     }
+
+    /** @test */
+    public function it_sets_a_background_color(): void
+    {
+        $data = 'test';
+
+        $this->assertStringContainsString('>test</div>', Utilities::addBackgroundColorToPayload($data, 'red'));
+        $this->assertStringContainsString('bg-red', Utilities::addBackgroundColorToPayload($data, 'red'));
+    }
 }

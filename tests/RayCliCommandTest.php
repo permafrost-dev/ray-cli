@@ -60,6 +60,16 @@ class RayCliCommandTest extends TestCase
     }
 
     /** @test */
+    public function it_sends_a_basic_string_with_a_background_color(): void
+    {
+        $tester = $this->getCommandTester();
+
+        $tester->execute(['command' => 'send', 'data' => 'my string', '--bg-red']);
+
+        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+    }
+
+    /** @test */
     public function it_sends_a_basic_string_with_label_and_color(): void
     {
         $tester = $this->getCommandTester();
