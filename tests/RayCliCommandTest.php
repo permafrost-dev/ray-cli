@@ -215,4 +215,23 @@ class RayCliCommandTest extends TestCase
         $tester->execute(['command' => 'send']);
         $this->assertStringContainsString('Usage: ', $tester->getDisplay());
     }
+
+    /** @test */
+    public function it_sends_named_color_payload(): void
+    {
+        $tester = $this->getCommandTester();
+
+        $tester->execute(['command' => 'send', '--red' => true, 'data' => 'test data']);
+        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+    }
+
+    /** @test */
+    public function it_retrieves_the_requested_url(): void
+    {
+        $tester = $this->getCommandTester();
+
+        $tester->execute(['command' => 'send', 'data' => 'https://static.permafrost.dev/test-data.json']);
+        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+    }
+
 }

@@ -4,6 +4,8 @@ namespace Permafrost\RayCli;
 
 class UrlClient
 {
+    public int $timeoutMs = 5000;
+
     public function retrieve(string $method, string $url): ?string
     {
         $result = null;
@@ -41,7 +43,7 @@ class UrlClient
 
         curl_setopt($curlHandle, CURLOPT_USERAGENT, 'ray-cli 1.0');
         curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curlHandle, CURLOPT_TIMEOUT, 15);
+        curl_setopt($curlHandle, CURLOPT_TIMEOUT_MS, $this->timeoutMs);
         curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, true);
         curl_setopt($curlHandle, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
         curl_setopt($curlHandle, CURLOPT_ENCODING, '');
@@ -56,6 +58,10 @@ class UrlClient
 
         if ($method === 'head') {
             curl_setopt($curlHandle, CURLOPT_CUSTOMREQUEST, 'HEAD');
+        }
+
+        if ($method === 'options') {
+            curl_setopt($curlHandle, CURLOPT_CUSTOMREQUEST, 'OPTIONS');
         }
 
         if ($method === 'patch') {

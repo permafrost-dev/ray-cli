@@ -8,16 +8,19 @@ use PHPUnit\Framework\TestCase;
 class UrlClientTest extends TestCase
 {
     /** @test */
-    public function it_retrieves_urls()
+    public function it_retrieves_urls(): void
     {
         $methods = [
-            'get', 'delete', 'patch', 'post', 'put',
+            'get', 'delete', 'head', 'options', 'patch', 'post', 'put',
         ];
 
         $client = new UrlClient();
 
-        foreach ($methods as $method) {
-            $result = $client->retrieve($method, 'https://static.permafrost.dev/test-data.json');
+        foreach ($methods as $method => $timeoutMs) {
+            $client->timeoutMs = 150;
+
+            $result = $client->retrieve($method, 'http://localhost:23517/');
+
             $this->assertNotNull($result);
         }
     }

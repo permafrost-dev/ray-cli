@@ -224,14 +224,16 @@ class RayCliCommand extends Command
 
     protected function retrieveRequestedUrl(Options $options): self
     {
-        $client = new UrlClient();
+        if ($options->url) {
+            $client = new UrlClient();
 
-        $data = $client->retrieve('get', $options->url);
+            $data = $client->retrieve('get', $options->url);
 
-        $options->label = $options->url ?? 'URL';
-        $options->data = $data;
-        $options->json = $options::isJsonString($data);
-        $options->filename = null;
+            $options->label = $options->url ?? 'URL';
+            $options->data = $data;
+            $options->json = $options::isJsonString($data);
+            $options->filename = null;
+        }
 
         return $this;
     }
