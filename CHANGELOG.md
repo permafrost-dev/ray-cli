@@ -4,6 +4,10 @@ All notable changes to `permafrost-dev/ray-cli` will be documented in this file.
 
 ---
 
+## 1.10.0 - 2021-01-15
+
+- add `--refresh=N` option that refreshes the payload display in Ray every N seconds.  If the payload argument is a file, the contents are re-read every N seconds; if it's a URL, it is re-downloaded every N seconds.
+
 ## 1.9.0 - 2021-01-14
 
 - every time `ray-cli` is executed, there's a 25% chance to make an http call to the github api to check for a new release.  This is done to avoid sending too many http requests during frequent use.  If there is a new release, a message is displayed along with a link where the release can be downloaded.

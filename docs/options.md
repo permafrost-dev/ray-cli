@@ -147,6 +147,21 @@ Examples:
 
 - `vendor/bin/ray -L "my label" "hello world"`
 
+### `--refresh`
+
+Arguments: `integer`
+
+Default: `none`
+
+Description: Refreshes the payload display in Ray every N seconds.  If a file is specified, it is re-read every N seconds; if a URL is specified, it is re-retrieved.
+
+Example:
+
+```bash
+# refresh the display of app.log every 5 seconds
+vendor/bin/ray --refresh=5 "storage/logs/app.log"
+```
+
 ---
 
 ## Modifiers

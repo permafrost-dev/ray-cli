@@ -22,7 +22,7 @@ You may install the package using composer:
 
 Also available is a download for  a `phar` executable from the [releases](https://github.com/permafrost-dev/ray-cli/releases) page.  The primary advantage of using a `phar` is that **you don't need to install the package** into your project.
 
-If you download  a `phar`, replace _`vendor/bin/ray`_ with the filename of the `phar` in the examples, i.e.:
+If you download  a `phstringar`, replace _`vendor/bin/ray`_ with the filename of the `phar` in the examples, i.e.:
 
 ```bash
 vendor/bin/ray 'test message' --green --large
@@ -71,6 +71,23 @@ vendor/bin/ray "https://api.github.com/repos/permafrost-dev/ray-cli"
 ## Available Options
 
 The `ray` script offers several flags for sending additional payloads to Ray:
+
+### `--refresh`
+
+Arguments: `integer`
+
+Default: `none`
+
+Description: Refreshes the payload display in Ray every N seconds.  If a file is specified, it is re-read every N seconds; if a URL is specified, it is re-retrieved.
+
+Example:
+
+```bash
+# refresh the display of app.log every 5 seconds
+vendor/bin/ray --refresh=5 "storage/logs/app.log"
+```
+
+
 
 ### `--color` or `-c`
 
