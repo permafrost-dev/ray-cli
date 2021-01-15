@@ -149,9 +149,11 @@ Examples:
 
 ### `--refresh`
 
-Arguments: `integer`
+Arguments: `integer` or `decimal`
 
 Default: `none`
+
+Accepted Values: any valid `integer` or `decimal`
 
 Description: Refreshes the payload display in Ray every N seconds, where N is either a whole number (i.e., `10`) or a decimal (i.e., `7.5`).  If a file is specified, it is re-read every N seconds; if a URL is specified, it is re-retrieved.
 
@@ -159,6 +161,21 @@ Examples:
 
 - `vendor/bin/ray --refresh=5 "storage/logs/app.log"`
 - `vendor/bin/ray --refresh=2.5 "storage/logs/app.log"`
+
+### `--exec`
+
+Arguments: `none`
+
+Default: `false`
+
+Accepted Values: `none`
+
+Description: Treats the argument as a script or executable, executes it, and sends the output to Ray.  Supported interpreters for scripts are `PHP`, `Python`, and `NodeJS`.  If the file is executable, such as a binary or `.sh` script, it will also be executed.  JSON content is automatically detected.
+
+Examples:
+
+- `vendor/bin/ray --exec "random.sh"`
+- `vendor/bin/ray --exec "random-number.php"`
 
 ---
 

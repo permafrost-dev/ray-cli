@@ -7,6 +7,8 @@ All notable changes to `permafrost-dev/ray-cli` will be documented in this file.
 ## 1.10.0 - 2021-01-15
 
 - add `--refresh=N` option that refreshes the payload display in Ray every N seconds.  If the payload argument is a file, the contents are re-read every N seconds; if it's a URL, it is re-downloaded every N seconds.
+  
+- add `--exec` option that will treat the main parameter as a script or executable filename.  The file will be executed and the output will be sent to Ray.  Supported script interpreters are `PHP`, `Python`, and `NodeJS`.  All files marked as executable are supported.
 
 ## 1.9.0 - 2021-01-14
 

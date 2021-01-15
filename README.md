@@ -72,6 +72,22 @@ vendor/bin/ray "https://api.github.com/repos/permafrost-dev/ray-cli"
 
 The `ray` script offers several flags for sending additional payloads to Ray:
 
+### `--exec`
+
+Arguments: `none`
+
+Default: `false`
+
+Description: Treats the argument as a script or executable, executes it, and sends the output to Ray.  Supported interpreters for scripts are `PHP`, `Python`, and `NodeJS`.  If the file is executable, such as a binary or `.sh` script, it will also be executed.  JSON content is automatically detected.
+
+Example:
+
+```bash
+# refresh the display of app.log every 5 seconds
+vendor/bin/ray --exec "random.sh"
+vendor/bin/ray --exec "random-number.php"
+```
+
 ### `--refresh`
 
 Arguments: `integer` or `decimal`
