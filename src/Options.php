@@ -13,6 +13,7 @@ class Options
     public ?string $color = null;
     public bool $csv = false;
     public ?string $delimiter = null;
+    public bool $exec = false;
     public bool $json = false;
     public string $label = '';
     public bool $large = false;
@@ -47,6 +48,9 @@ class Options
     /** @var string|string[]|array|mixed|null */
     public $jsonData = null;
 
+    /** @var array|null */
+    public $execOutput = null;
+
     protected bool $resetDataToNull = false;
 
     public static function fromInput(InputInterface $input): self
@@ -75,7 +79,11 @@ class Options
             && is_file($result->data);
 
         if ($isValidFile) {
-            $result->loadFileContentAsData();
+            $result->handlePayloadExecution();
+
+            if (!$result->exec) {
+                $result->loadFileContentAsData();
+            }
         }
 
         return $result;
@@ -101,6 +109,7 @@ class Options
         // boolean options
         $this->clear = (bool)self::getOption($input, 'clear', false);
         $this->csv = (bool)self::getOption($input, 'csv', false);
+        $this->exec = (bool)self::getOption($input, 'exec', false);
         $this->json = (bool)self::getOption($input, 'json', false);
         $this->large = (bool)self::getOption($input, 'large', false);
         $this->notify = (bool)self::getOption($input, 'notify', false);
@@ -197,7 +206,7 @@ class Options
 
     public static function isJsonString($text): bool
     {
-        if (!is_string($text) || empty($text)) {
+        if (!is_string($text) || is_numeric($text) || empty($text)) {
             return false;
         }
 
@@ -313,6 +322,44 @@ class Options
         }
 
         return $this;
+    }
+
+    protected function handlePayloadExecution(): void
+    {
+        if ($this->exec) {
+            $this->execOutput = [];
+            $command = realpath($this->data);
+
+            $extStartPos = strrpos($command, '.');
+            $commandExt = null;
+
+            if ($extStartPos !== false) {
+                $commandExt = strtolower(substr($command, $extStartPos + 1));
+            }
+
+            $interpreters = [
+                'php' => 'php',
+                'py' => 'python',
+                'js' => 'node',
+            ];
+
+            if (isset($interpreters[$commandExt])) {
+                $command = $interpreters[$commandExt] . ' ' . $command;
+            } elseif (!is_executable($command)) {
+                $this->exec = false;
+            }
+
+            if ($this->exec && $command) {
+                exec($command, $this->execOutput);
+
+                $output = trim(implode(PHP_EOL, $this->execOutput));
+
+                if ($this::isJsonString($output)) {
+                    $this->json = true;
+                    $this->jsonData = json_decode($output, true);
+                }
+            }
+        }
     }
 
     public function resetSizes(): void

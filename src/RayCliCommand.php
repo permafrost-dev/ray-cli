@@ -267,7 +267,7 @@ class RayCliCommand extends Command
         // send a decoded json payload
 
         if ($options->jsonData || $options->json) {
-            $this->updatePayload($this->payload->json($options->data));
+            $this->updatePayload($this->payload->json(json_encode($options->jsonData)));
         }
 
         return $this;
@@ -294,7 +294,13 @@ class RayCliCommand extends Command
         // send the string argument as the payload with optional label
 
         if (!$this->updatedPayload || $force) {
-            $data = Utilities::addBackgroundColorToPayload($options->data, $options->backgroundColor);
+            $data = $options->data;
+
+            if ($options->execOutput) {
+                $data = trim(implode(PHP_EOL, $options->execOutput));
+            }
+
+            $data = Utilities::addBackgroundColorToPayload($data, $options->backgroundColor);
 
             $this->updatePayload($this->payload->sendCustom($data, $options->label));
         }

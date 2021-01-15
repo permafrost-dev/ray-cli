@@ -123,6 +123,7 @@ class Utilities
             ->addOption('color', 'c', InputOption::VALUE_REQUIRED, 'The payload color', 'default')
             ->addOption('csv', null, InputOption::VALUE_NONE, 'Sends the data as a comma-separated list')
             ->addOption('delimiter', 'D', InputOption::VALUE_REQUIRED, 'Sends the data as a list using the specified delimiter')
+            ->addOption('exec', 'x', InputOption::VALUE_NONE, 'Runs the payload as an executable and sends the output to Ray')
             ->addOption('json', 'j', InputOption::VALUE_NONE, 'Sends a json payload')
             ->addOption('label', 'L', InputOption::VALUE_REQUIRED, 'Sends a label with the payload')
             ->addOption('large', null, InputOption::VALUE_NONE, 'Send the payload as large text')

@@ -242,4 +242,19 @@ class RayCliCommandTest extends TestCase
         $tester->execute(['command' => 'send', 'data' => __DIR__ . '/testfile.json', '--refresh' => '0.025']);
         $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
     }
+
+    /** @test */
+    public function it_executes_the_parameter_and_displays_the_output(): void
+    {
+        $tester = $this->getCommandTester();
+
+        $tester->execute(['command' => 'send', 'data' => __DIR__ . '/scripts/testscript.php', '--exec' => true]);
+        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+
+        $tester->execute(['command' => 'send', 'data' => __DIR__ . '/scripts/testscript.sh', '--exec' => true]);
+        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+
+        $tester->execute(['command' => 'send', 'data' => __DIR__ . '/scripts/testscript-noexec.sh', '--exec' => true]);
+        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+    }
 }
