@@ -19,7 +19,8 @@ class RayCliCommand extends Command
     {
         $this->input = $input;
 
-        $this->checkForUpdates($output);
+        // update checks disable for now
+        // $this->checkForUpdates($output);
 
         $this->initializeCommand($input);
 
