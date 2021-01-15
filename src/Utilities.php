@@ -129,6 +129,7 @@ class Utilities
             ->addOption('lg', null, InputOption::VALUE_NONE, 'Send the payload as large text')
             ->addOption('notify', 'N', InputOption::VALUE_NONE, 'Sends a notification payload')
             ->addOption('raw', 'R', InputOption::VALUE_NONE, 'Don\'t preprocess strings before sending')
+            ->addOption('refresh', null, InputOption::VALUE_REQUIRED, 'Refresh the payload every N seconds')
             ->addOption('screen', 's', InputOption::VALUE_OPTIONAL, 'Create a new screen with an optional name')
             ->addOption('size', 'S', InputOption::VALUE_REQUIRED, 'Send the payload text size (sm/lg)')
             ->addOption('small', null, InputOption::VALUE_NONE, 'Send the payload as small text')

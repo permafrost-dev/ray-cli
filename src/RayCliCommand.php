@@ -13,9 +13,12 @@ class RayCliCommand extends Command
     protected bool $updatedPayload = false;
     protected Ray $payload;
     protected Options $options;
+    protected InputInterface $input;
 
     public function execute(InputInterface $input, ?OutputInterface $output)
     {
+        $this->input = $input;
+
         $this->checkForUpdates($output);
 
         $this->initializeCommand($input);
@@ -82,6 +85,34 @@ class RayCliCommand extends Command
             ->sendDelimitedList($options)
             ->sendDecodedJson($options)
             ->sendCustomData($options); // must be called last
+
+        if ($options->refresh && is_numeric($options->refresh)) {
+            $this->refresh((int)$options->refresh, 10);
+        }
+
+        return $this;
+    }
+
+    protected function refresh(int $delay, int $times): self
+    {
+        $counter = 1;
+
+        while (true) {
+            $options = Options::fromInput($this->input);
+
+            $this->retrieveRequestedUrl($options) // must be done before the sendXXX methods
+                ->sendDelimitedList($options)
+                ->sendDecodedJson($options)
+                ->sendCustomData($options, true);
+
+            sleep($delay);
+
+            $counter++;
+
+            if ($counter > $times) {
+                break;
+            }
+        }
 
         return $this;
     }
@@ -258,13 +289,13 @@ class RayCliCommand extends Command
         return $this;
     }
 
-    protected function sendCustomData(Options $options): self
+    protected function sendCustomData(Options $options, bool $force = false): self
     {
         // send the string argument as the payload with optional label
 
-        $data = Utilities::addBackgroundColorToPayload($options->data, $options->backgroundColor);
+        if (!$this->updatedPayload || $force) {
+            $data = Utilities::addBackgroundColorToPayload($options->data, $options->backgroundColor);
 
-        if (!$this->updatedPayload) {
             $this->updatePayload($this->payload->sendCustom($data, $options->label));
         }
 

@@ -18,6 +18,7 @@ class Options
     public bool $large = false;
     public bool $notify = false;
     public bool $raw = false;
+    public ?string $refresh = null;
     public ?string $screen = null;
     public ?string $size = null;
     public bool $small = false;
@@ -93,6 +94,7 @@ class Options
         $this->color = self::getOption($input, 'color', null);
         $this->delimiter = self::getOption($input, 'delimiter', null);
         $this->label = (string)self::getOption($input, 'label', '');
+        $this->refresh = self::getOption($input, 'refresh', null);
         $this->screen = self::getOption($input, 'screen', null);
         $this->size = self::getOption($input, 'size', null);
 
