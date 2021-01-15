@@ -74,20 +74,20 @@ The `ray` script offers several flags for sending additional payloads to Ray:
 
 ### `--refresh`
 
-Arguments: `integer`
+Arguments: `integer` or `decimal`
 
 Default: `none`
 
-Description: Refreshes the payload display in Ray every N seconds.  If a file is specified, it is re-read every N seconds; if a URL is specified, it is re-retrieved.
+Description: Refreshes the payload display in Ray every N seconds, where N is either a whole number (i.e., `10`) or a decimal (i.e., `7.5`).  If a file is specified, it is re-read every N seconds; if a URL is specified, it is re-retrieved.
 
 Example:
 
 ```bash
 # refresh the display of app.log every 5 seconds
 vendor/bin/ray --refresh=5 "storage/logs/app.log"
+# ...or refresh every 2.5 seconds
+vendor/bin/ray --refresh=2.5 "storage/logs/app.log"
 ```
-
-
 
 ### `--color` or `-c`
 
