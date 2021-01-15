@@ -234,4 +234,12 @@ class RayCliCommandTest extends TestCase
         $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
     }
 
+    /** @test */
+    public function it_refreshes_the_display_of_a_file(): void
+    {
+        $tester = $this->getCommandTester();
+
+        $tester->execute(['command' => 'send', 'data' => __DIR__ . '/testfile.json', '--refresh' => '0.025']);
+        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+    }
 }
