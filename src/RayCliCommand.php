@@ -87,13 +87,13 @@ class RayCliCommand extends Command
             ->sendCustomData($options); // must be called last
 
         if ($options->refresh && is_numeric($options->refresh)) {
-            $this->refresh((int)$options->refresh, 10);
+            $this->refresh((float)$options->refresh, 10);
         }
 
         return $this;
     }
 
-    protected function refresh(int $delay, int $times): self
+    protected function refresh(float $delay, int $times): self
     {
         $counter = 1;
 
@@ -105,7 +105,7 @@ class RayCliCommand extends Command
                 ->sendDecodedJson($options)
                 ->sendCustomData($options, true);
 
-            sleep($delay);
+            usleep($delay * 1000000);
 
             $counter++;
 
