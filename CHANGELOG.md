@@ -3,6 +3,15 @@
 All notable changes to `permafrost-dev/ray-cli` will be documented in this file.
 
 ---
+
+## 1.11.0 - 2021-02-01
+
+- add `--image` and `--clear-all` flags
+
+- add `--update-check` flag to force `ray-cli` to check for an updated version
+
+- `ray-cli` now returns silently unless the `-v`/`--verbose` flag is specified
+
 ## 1.10.1 - 2021-01-15
 
 - disable update checks due to bug with version_compare().
