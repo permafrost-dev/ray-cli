@@ -19,10 +19,11 @@ class RayCliCommand extends Command
     {
         $this->input = $input;
 
-        // update checks disable for now
-        // $this->checkForUpdates($output);
-
         $this->initializeCommand($input);
+
+        if ($this->handleUpdateCheckFlag($input, $output)) {
+            return Command::SUCCESS;
+        }
 
         if (!$this->ensureDataExistsToSend($this->options, $output)) {
             return Command::FAILURE;
@@ -46,6 +47,19 @@ class RayCliCommand extends Command
         $this->payload = ray();
 
         return $this;
+    }
+
+    protected function handleUpdateCheckFlag(InputInterface $input, $output): bool
+    {
+        if ($input->hasOption('update-check') && $input->getOption('update-check') === true) {
+            if (!$this->checkForUpdates($output)) {
+                $output->writeln('<info>You are running the latest version of ray-cli.</info>');
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     protected function ensureDataExistsToSend(Options $options, OutputInterface $output): bool
@@ -121,14 +135,8 @@ class RayCliCommand extends Command
         return $this;
     }
 
-    /** @codeCoverageIgnore */
-    protected function checkForUpdates(OutputInterface $output): void
+    protected function checkForUpdates(OutputInterface $output): bool
     {
-        // 25% chance to check for updates, to avoid repeatedly hitting the github api
-        if (random_int(0, 100) < 75) {
-            return;
-        }
-
         $checker = UpdateChecker::create();
 
         $latest = $checker->retrieveLatestRelease();
@@ -136,7 +144,11 @@ class RayCliCommand extends Command
         if ($checker->isUpdateAvailable($latest, null)) {
             $output->writeln("<info>There is a new release available: $latest</info>");
             $output->writeln("<info>You can download it from https://github.com/permafrost-dev/ray-cli/releases/tag/$latest</info>\n");
+
+            return true;
         }
+
+        return false;
     }
 
     protected function updatePayload(Ray $payload, bool $markUpdated = true): void

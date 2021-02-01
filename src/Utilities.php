@@ -137,7 +137,8 @@ class Utilities
             ->addOption('size', 'S', InputOption::VALUE_REQUIRED, 'Send the payload text size (sm/lg)')
             ->addOption('small', null, InputOption::VALUE_NONE, 'Send the payload as small text')
             ->addOption('sm', null, InputOption::VALUE_NONE, 'Send the payload as small text')
-            ->addOption('stdin', null, InputOption::VALUE_NONE, 'Read data from stdin');
+            ->addOption('stdin', null, InputOption::VALUE_NONE, 'Read data from stdin')
+            ->addOption('update-check', null, InputOption::VALUE_NONE, 'Checks for updated versions of ray-cli');
 
         self::$app = self::initializeColorFlags($app);
 

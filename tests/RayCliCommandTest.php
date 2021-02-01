@@ -294,4 +294,14 @@ class RayCliCommandTest extends TestCase
         $tester->execute(['command' => 'send', 'data' => __DIR__ . '/scripts/testscript-noexec.sh', '--exec' => true]);
         $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
     }
+
+    /** @test */
+    public function it_checks_for_updates(): void
+    {
+        $tester = $this->getCommandTester();
+
+        $tester->execute(['command' => 'send', '--update-check' => true, 'data' => 'test']);
+
+        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+    }
 }
