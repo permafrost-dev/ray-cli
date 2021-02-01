@@ -173,6 +173,15 @@ class RayCliCommandTest extends TestCase
     }
 
     /** @test */
+    public function it_clears_all_screens(): void
+    {
+        $tester = $this->getCommandTester();
+
+        $tester->execute(['command' => 'send', 'data' => 'test string', '--clear-all' => true]);
+        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+    }
+
+    /** @test */
     public function it_sends_sizes_with_named_flags(): void
     {
         $tester = $this->getCommandTester();
@@ -240,6 +249,34 @@ class RayCliCommandTest extends TestCase
         $tester = $this->getCommandTester();
 
         $tester->execute(['command' => 'send', 'data' => __DIR__ . '/testfile.json', '--refresh' => '0.025']);
+        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+    }
+
+    /** @test */
+    public function it_sends_an_image_url(): void
+    {
+        $tester = $this->getCommandTester();
+
+        $tester->execute([
+            'command' => 'send',
+            'data' => 'https://static.permafrost.dev/images/ray-cli/ray-cli-logo-01.png',
+            '--image' => true,
+        ]);
+
+        $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
+    }
+
+    /** @test */
+    public function it_sends_an_image_file(): void
+    {
+        $tester = $this->getCommandTester();
+
+        $tester->execute([
+            'command' => 'send',
+            'data' => __FILE__,
+            '--image' => true,
+        ]);
+
         $this->assertEquals(Command::SUCCESS, $tester->getStatusCode());
     }
 

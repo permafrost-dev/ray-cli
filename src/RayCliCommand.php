@@ -85,6 +85,7 @@ class RayCliCommand extends Command
             ->retrieveRequestedUrl($options) // must be done before the sendXXX methods
             ->sendDelimitedList($options)
             ->sendDecodedJson($options)
+            ->sendImage($options)
             ->sendCustomData($options); // must be called last
 
         if ($options->refresh && is_numeric($options->refresh)) {
@@ -184,9 +185,16 @@ class RayCliCommand extends Command
 
     protected function sendOnlyClearScreen(Options $options): bool
     {
-        if (empty($options->data) && $options->clear) {
-            // only clear the screen and nothing else
-            $this->payload->clearScreen();
+        if (empty($options->data) && ($options->clear || $options->clearAll)) {
+
+            if ($options->clear) {
+                // only clear the screen and nothing else
+                $this->payload->clearScreen();
+            }
+
+            if ($options->clearAll) {
+                $this->payload->clearAll();
+            }
 
             // since no data is being sent, ignore the color/size flags so we don't
             // send an empty payload with just a color or size.
@@ -274,9 +282,23 @@ class RayCliCommand extends Command
         return $this;
     }
 
+    protected function sendImage(Options $options): self
+    {
+        if ($options->image) {
+            if ($options->url) {
+                $this->updatePayload($this->payload->image($options->url));
+            } else {
+                $data = base64_encode($options->data);
+                $this->updatePayload($this->payload->html('<img src="data:image/png;base64,' . $data . '" alt="">'));
+            }
+        }
+
+        return $this;
+    }
+
     protected function retrieveRequestedUrl(Options $options): self
     {
-        if ($options->url) {
+        if ($options->url && !$options->image) {
             $client = new UrlClient();
 
             $data = $client->retrieve('get', $options->url);

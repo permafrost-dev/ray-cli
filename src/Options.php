@@ -10,10 +10,12 @@ class Options
     public ?string $backgroundColor = null;
 
     public bool $clear = false;
+    public bool $clearAll = false;
     public ?string $color = null;
     public bool $csv = false;
     public ?string $delimiter = null;
     public bool $exec = false;
+    public bool $image = false;
     public bool $json = false;
     public string $label = '';
     public bool $large = false;
@@ -108,8 +110,10 @@ class Options
 
         // boolean options
         $this->clear = (bool)self::getOption($input, 'clear', false);
+        $this->clearAll = (bool)self::getOption($input, 'clear-all', false);
         $this->csv = (bool)self::getOption($input, 'csv', false);
         $this->exec = (bool)self::getOption($input, 'exec', false);
+        $this->image = (bool)self::getOption($input, 'image', false);
         $this->json = (bool)self::getOption($input, 'json', false);
         $this->large = (bool)self::getOption($input, 'large', false);
         $this->notify = (bool)self::getOption($input, 'notify', false);
@@ -132,19 +136,15 @@ class Options
      */
     public static function getOption(InputInterface $input, string $name, $default)
     {
-        if ($input->hasOption($name)) {
-            return $input->getOption($name);
-        }
-
         if ($input->hasOption($name) && !$input->getOption($name)) {
             return $default;
         }
 
-        if (!$input->hasOption($name)) {
-            return $default;
+        if ($input->hasOption($name)) {
+            return $input->getOption($name);
         }
 
-        return $input->getOption($name);
+        return $default;
     }
 
     /**
@@ -265,6 +265,14 @@ class Options
 
         if ($input->hasOption('clear') && $input->getOption('clear') === false) {
             $this->clear = false;
+        }
+
+        if (!$input->hasOption('clear-all')) {
+            $this->clearAll = false;
+        }
+
+        if ($input->hasOption('clear-all') && $input->getOption('clear-all') === false) {
+            $this->clearAll = false;
         }
     }
 

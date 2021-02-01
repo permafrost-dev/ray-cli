@@ -82,11 +82,11 @@ class OptionsTest extends TestCase
         $input2 = new ArgvInput(['bin/ray', '--clear', '-s', 'test1', '--color=red', '"test string"'], $definition2);
 
         $this->assertEquals('default_value', Options::getOption($input1, 'clear', 'default_value'));
-        $this->assertEquals(null, Options::getOption($input1, 'screen', 'default_value'));
+        $this->assertEquals(null, Options::getOption($input1, 'screen', null));
         $this->assertEquals(true, Options::getOption($input2, 'clear', 'test'));
         $this->assertEquals('test1', Options::getOption($input2, 'screen', 'default_value'));
         $this->assertEquals('red', Options::getOption($input2, 'color', 'default_value'));
-        $this->assertEquals(false, Options::getOption($input2, 'large', 'default_value'));
+        $this->assertEquals(false, Options::getOption($input2, 'large', false));
     }
 
     /** @test */
