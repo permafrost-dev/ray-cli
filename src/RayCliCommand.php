@@ -33,7 +33,9 @@ class RayCliCommand extends Command
             ->sendNamedColorPayload($this->options)
             ->sendSizePayload($this->options);
 
-        $output->writeln('<info>Sent data to Ray.</info>');
+        if ($input->hasOption('verbose') && $input->getOption('verbose') === true) {
+            $output->writeln('<info>Sent data to Ray.</info>');
+        }
 
         return Command::SUCCESS;
     }
