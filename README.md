@@ -314,6 +314,36 @@ vendor/bin/ray -C
 vendor/bin/ray --clear
 ```
 
+### `--clear-all`
+
+Arguments: `none`
+
+Default: `none`
+
+Description: causes Ray to clear all screens.
+
+Example:
+
+```bash
+vendor/bin/ray --clear-all
+```
+
+### `--image` or `-i`
+
+Arguments: `none`
+
+Default: `none`
+
+Description: causes the payload to be treated as an image.  The payload must be either a URL or an existing filename.
+
+Example:
+
+```bash
+vendor/bin/ray --image https://static.permafrost.dev/images/ray-cli/ray-cli-logo-01.png
+
+vendor/bin/ray -i my-image-file.png
+```
+
 ## `--blue`, `--gray`, `--green`, `--orange`, `--purple`, `--red`
 
 Arguments: `none`
