@@ -38,11 +38,11 @@ class UpdateChecker
     }
 
     public function isUpdateAvailable(?string $latestVersion = null, ?string $currentVersion = null): bool
-    {
-        $latestVersion = $latestVersion ?? $this->retrieveLatestRelease();
-        $currentVersion = $currentVersion ?? Utilities::getPackageVersion();
-
-        if ($currentVersion === 'dev-main') {
+    {        
+        $latestVersion = preg_replace('~[^0-9\.]+~', '', $latestVersion ?? $this->retrieveLatestRelease());
+        $currentVersion = preg_replace('~[^0-9\.]+~', '', $currentVersion ?? Utilities::getPackageVersion());
+        
+        if ($currentVersion === 'dev-main' || $currentVersion === '') {
             $currentVersion = '99.99.99';
         }
 
