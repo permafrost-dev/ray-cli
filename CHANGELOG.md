@@ -4,6 +4,12 @@ All notable changes to `permafrost-dev/ray-cli` will be documented in this file.
 
 ---
 
+## 1.12.0 - 2021-02-01
+
+- fix the update checker
+
+- update readme
+
 ## 1.11.0 - 2021-02-01
 
 - add `--image` and `--clear-all` flags
