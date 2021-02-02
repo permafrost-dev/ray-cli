@@ -22,7 +22,7 @@ You may install the package using composer:
 
 Also available is a download for  a `phar` executable from the [releases](https://github.com/permafrost-dev/ray-cli/releases) page.  The primary advantage of using a `phar` is that **you don't need to install the package** into your project.
 
-If you download  a `phstringar`, replace _`vendor/bin/ray`_ with the filename of the `phar` in the examples, i.e.:
+If you download  a `phar`, replace _`vendor/bin/ray`_ with the filename of the `phar` in the examples, i.e.:
 
 ```bash
 vendor/bin/ray 'test message' --green --large
@@ -71,6 +71,20 @@ vendor/bin/ray "https://api.github.com/repos/permafrost-dev/ray-cli"
 ## Available Options
 
 The `ray` script offers several flags for sending additional payloads to Ray:
+
+### `--update-check`
+
+Arguments: `none`
+
+Default: `false`
+
+Description: Checks for an updated version of `ray-cli`.  If specified, all other flags are ignored.
+
+Example:
+
+```bash
+vendor/bin/ray --update-check
+```
 
 ### `--exec`
 
