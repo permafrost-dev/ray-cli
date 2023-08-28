@@ -16,7 +16,7 @@
         "symfony/console": "^5.2"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.16",
+        "friendsofphp/php-cs-fixer": "^3.23",
         "permafrost-dev/phpcsfixer-preset": "^2.0",
         "phpunit/phpunit": "^9.5"
     },
